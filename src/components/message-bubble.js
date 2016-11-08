@@ -79,28 +79,45 @@ const formatTime = timestamp => {
     return `${hours}:${minutes}`;
 };
 
-
-const MessageBubble = ({sender, text, time, me}) => (
-    <div style={sender.id === me.id ? messageContainerRightStyle : messageContainerLeftStyle}>
-        {sender.id !== me.id && (
-            <img style={avatarStyle} width={48} height={48} src={sender.avatar} alt={`${sender.name} avatar`} />
-        )}
-        <div style={sender.id === me.id ? messageRightStyle : messageLeftStyle}>
-            {sender.id !== me.id && (
-                <div style={{fontWeight: 500, marginBottom: 4, color: getUserColor(sender)}}>
-                    {sender.name}
-                </div>
-            )}
+const OwnMessage = ({children}) => (
+    <div style={messageContainerRightStyle}>
+        <div style={messageRightStyle}>
             <div>
-                <span style={{wordBreak: 'break-word'}}>
-                    {text}
-                </span>
-                <span style={timeStyle}>
-                    {formatTime(time)}
-                </span>
+                {children}
             </div>
         </div>
     </div>
 );
+
+const OtherMessage = ({sender, children}) => (
+    <div style={messageContainerLeftStyle}>
+        <img style={avatarStyle} width={48} height={48} src={sender.avatar} alt={`${sender.name} avatar`} />
+        <div style={messageLeftStyle}>
+            <div style={{fontWeight: 500, marginBottom: 4, color: getUserColor(sender)}}>
+                {sender.name}
+            </div>
+            <div>
+                {children}
+            </div>
+        </div>
+    </div>
+);
+
+const MessageBubble = ({sender, text, time, me}) => {
+    const MessageWrapper = sender.id === me.id
+        ? OwnMessage
+        : OtherMessage;
+
+    return (
+        <MessageWrapper sender={sender}>
+            <span style={{wordBreak: 'break-word'}}>
+                {text}
+            </span>
+            <span style={timeStyle}>
+                {formatTime(time)}
+            </span>
+        </MessageWrapper>
+    )
+}
 
 export default MessageBubble
