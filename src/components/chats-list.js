@@ -1,0 +1,88 @@
+import React from 'react';
+import {connect} from 'react-redux';
+import FlipMove from 'react-flip-move';
+import {getConversations, getCurrentUser} from '../reducer';
+import {openConversation} from '../actions';
+
+const chatRowStyle = {
+    height: 64,
+    display: 'flex',
+    alignItems: 'center',
+};
+
+const avatarStyle = {
+    height: 48,
+    width: 48,
+    borderRadius: '50%',
+    margin: '0 8px',
+};
+
+const rowContentStyle = {
+    flex: 1,
+    height: '100%',
+    padding: '12px 8px 12px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    minWidth: 0,
+    borderBottom: '1px solid #eee',
+};
+
+const titleStyle = {
+    fontWeight: 500,
+};
+
+const previewStyle = {
+    color: '#ccc',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+};
+
+const getConversationPreview = ({lastMessage, id: conversationId}, me) => {
+    const isGroupChat = conversationId === 'all';
+    if (lastMessage) {
+        const {sender} = lastMessage;
+        const senderName = sender.id === me.id ? 'me' : sender.name;
+        return (
+            <span>
+                {isGroupChat && (
+                    <span style={{color:'#2196F3'}}>{`${senderName}: `}</span>
+                )}
+                <span>{lastMessage.text}</span>
+            </span>
+        )
+    } else {
+        return isGroupChat ? 'Talk with everyone!' : null;
+    }
+}
+
+const ChatsList = ({conversations, onSelectChat, currentUser}) => (
+    <FlipMove typeName="ul">
+        {conversations.map(conversation =>
+            <li
+                style={chatRowStyle}
+                key={conversation.id}
+                onClick={() => onSelectChat(conversation.id)}
+            >
+                <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
+                <div style={rowContentStyle}>
+                    <div style={titleStyle}>
+                        {conversation.fullName}
+                    </div>
+                    <div style={previewStyle}>
+                        {getConversationPreview(conversation, currentUser) || `${conversation.fullName} has joined!`}
+                    </div>
+                </div>
+            </li>
+        )}
+    </FlipMove>
+);
+
+export default connect(
+    state => ({
+        conversations: getConversations(state),
+        currentUser: getCurrentUser(state),
+    }),
+    {onSelectChat: openConversation}
+)(ChatsList);
