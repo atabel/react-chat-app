@@ -1,5 +1,7 @@
 import React, {PropTypes as t} from 'react';
+import {connect} from 'react-redux';
 import SendIcon from './send-icon';
+import {sendMessage} from '../actions';
 
 const barStyle = {
     height: 50,
@@ -45,7 +47,6 @@ const ChatBar = React.createClass({
                 <input
                     style={inputStyle}
                     type="text"
-                    ref={node => (this.input = node)}
                     placeholder="type a message"
                     value={text}
                     onChange={evt => this.setState({text: evt.target.value})}
@@ -58,4 +59,7 @@ const ChatBar = React.createClass({
     },
 });
 
-export default ChatBar;
+export default connect(
+    null,
+    {onSend: sendMessage}
+)(ChatBar);

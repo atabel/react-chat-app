@@ -9,7 +9,7 @@ const initApp = (userInfo) => {
     const store = createStore(userInfo, chatClient);
     ReactDOM.render(
         <Provider store={store}>
-            <App user={userInfo} />
+            <App />
         </Provider>,
         document.getElementById('root')
     );
