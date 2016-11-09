@@ -39,9 +39,6 @@ const chatClient = {
      */
     getUsers() {
         this.send({type: 'getUsers', receiver: 'server'});
-        // return fetch('http://localhost:8000/getUsers')
-        //     .then(res => res.json())
-        //     .then(({users}) => users);
     },
 
     /**
