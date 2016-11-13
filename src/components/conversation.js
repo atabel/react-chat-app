@@ -45,8 +45,10 @@ const Conversation = React.createClass({
         users: t.arrayOf(t.object),
     },
 
-    componentWillUpdate() {
-        this.shouldScrollBottom = getScrollToBottomDistance(this.list) === 0;
+    componentWillUpdate(nextProps) {
+        const lastMessage = nextProps.messages[nextProps.messages.length - 1];
+        const iHaveJustSentAMessage = lastMessage.sender === nextProps.currentUser.id;
+        this.shouldScrollBottom = iHaveJustSentAMessage || getScrollToBottomDistance(this.list) === 0;
     },
 
     componentDidUpdate() {
