@@ -9,6 +9,7 @@ import {getCurrentConversation} from '../reducer';
 import {
     addMessage,
     addConversation,
+    disconnectUser,
     closeConversation
 } from '../actions';
 
@@ -18,6 +19,7 @@ const App = React.createClass({
         onReceiveMessage: t.func,
         onReceiveConversation: t.func,
         onCloseConversation: t.func,
+        onUserDisconnects: t.func,
     },
 
     getInitialState() {
@@ -25,14 +27,19 @@ const App = React.createClass({
     },
 
     componentDidMount() {
-        const {onReceiveConversation, onReceiveMessage} = this.props;
+        const {onReceiveConversation, onReceiveMessage, onUserDisconnects} = this.props;
         chatClient.on('message', ({sender, payload, time, receiver}) => {
-            onReceiveMessage({sender, text: payload.text, time, receiver});
+            onReceiveMessage({sender, text: payload.text, media: payload.media, time, receiver});
         });
 
         chatClient.on('user', ({payload}) => {
             onReceiveConversation(payload)
         });
+
+        chatClient.on('disconnect', ({payload: userId}) => {
+            onUserDisconnects(userId);
+        });
+
         chatClient.getUsers();
     },
 
@@ -114,6 +121,7 @@ export default connect(
     {
         onReceiveConversation: addConversation,
         onReceiveMessage: addMessage,
-        onCloseConversation: closeConversation
+        onCloseConversation: closeConversation,
+        onUserDisconnects: disconnectUser,
     }
 )(App);

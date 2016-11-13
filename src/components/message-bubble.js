@@ -37,28 +37,38 @@ const messageContainerLeftStyle = {
     justifyContent: 'flex-start',
 };
 
+const avatarSize = 48;
 const avatarStyle = {
     borderRadius: '50%',
     marginRight: 8,
     alignSelf: 'flex-end',
 };
 
-const messageStyle = {
-    fontSize: 14,
+const leftMessageStyle = {
+    maxWidth: `calc(80% - ${avatarSize}px)`,
+};
+
+const rightMessageStyle = {
     maxWidth: '80%',
+};
+
+const textMessageStyle = {
+    fontSize: 14,
     padding: 8,
     borderRadius: 4,
     boxShadow: '0 1px .5px rgba(0,0,0,.13)',
 };
 
-const messageRightStyle = {
-    ...messageStyle,
+const ownTextMessageStyle = {
+    ...textMessageStyle,
+    ...rightMessageStyle,
     background: '#2196F3',
     color: 'white',
 };
 
-const messageLeftStyle = {
-    ...messageStyle,
+const otherTextMessageStyle = {
+    ...textMessageStyle,
+    ...leftMessageStyle,
     background: 'white',
 };
 
@@ -67,6 +77,16 @@ const timeStyle = {
     margin: '8px -4px -4px 12px',
     fontSize: 11,
     opacity: 0.4,
+};
+
+const imgTimeStyle = {
+    position: 'absolute',
+    right: 8,
+    bottom: 8,
+    padding: '2px 4px',
+    color: 'white',
+    background: 'rgba(0,0,0,0.5)',
+    fontSize: 11
 };
 
 const twoDigits = num =>
@@ -81,7 +101,7 @@ const formatTime = timestamp => {
 
 const OwnMessage = ({children}) => (
     <div style={messageContainerRightStyle}>
-        <div style={messageRightStyle}>
+        <div style={ownTextMessageStyle}>
             <div>
                 {children}
             </div>
@@ -89,10 +109,22 @@ const OwnMessage = ({children}) => (
     </div>
 );
 
+const OwnImage = ({children}) => (
+    <div style={messageContainerRightStyle}>
+        <div style={rightMessageStyle}>
+            {children}
+        </div>
+    </div>
+);
+
+const Avatar = ({sender}) => (
+    <img style={avatarStyle} width={avatarSize} height={avatarSize} src={sender.avatar} alt={`${sender.name} avatar`} />
+);
+
 const OtherMessage = ({sender, children}) => (
     <div style={messageContainerLeftStyle}>
-        <img style={avatarStyle} width={48} height={48} src={sender.avatar} alt={`${sender.name} avatar`} />
-        <div style={messageLeftStyle}>
+        <Avatar sender={sender} />
+        <div style={otherTextMessageStyle}>
             <div style={{fontWeight: 500, marginBottom: 4, color: getUserColor(sender)}}>
                 {sender.name}
             </div>
@@ -103,21 +135,68 @@ const OtherMessage = ({sender, children}) => (
     </div>
 );
 
-const MessageBubble = ({sender, text, time, me}) => {
-    const MessageWrapper = sender.id === me.id
-        ? OwnMessage
-        : OtherMessage;
+const OtherImage = ({sender, children}) => (
+    <div style={messageContainerLeftStyle}>
+        <Avatar sender={sender} />
+        <div style={leftMessageStyle}>
+            {children}
+        </div>
+    </div>
+);
 
-    return (
+const Media = ({
+    url,
+    title,
+    description,
+    image,
+    embed,
+    isOwnMessage,
+}) => (
+    <div
+        style={{
+            background: isOwnMessage ? '#72bcf8' : '#eee',
+            padding: 8,
+            marginTop: 8,
+            fontSize: 13,
+        }}
+    >
+        <a href={url} style={{color: 'inherit', textDecoration: 'inherit'}} target="_blank">
+            {title && <h3 style={{marginBottom: 8, fontWeight: 500}}>{title}</h3>}
+            {description && <p style={{fontStyle: 'italic', marginBottom: 8}}>{description}</p>}
+            {image && <img style={{width: '100%'}} src={image.url} alt={image.url} />}
+        </a>
+    </div>
+);
+
+const isImg = ({title, description, image, url} = {}) =>
+    url && !title && !description && !image;
+
+const MessageBubble = ({sender, text, media, time, me}) => {
+    const isOwnMessage = sender.id === me.id;
+
+    const MessageWrapper = isOwnMessage ? OwnMessage : OtherMessage;
+    const ImgWrapper = isOwnMessage ? OwnImage : OtherImage;
+
+    return isImg(media) ? (
+        <ImgWrapper sender={sender}>
+            <div style={{position: 'relative'}}>
+                <img style={{width: '100%', borderRadius: 4}} src={media.url} alt={media.url} />
+                <span style={imgTimeStyle}>
+                    {formatTime(time)}
+                </span>
+            </div>
+        </ImgWrapper>
+    ) : (
         <MessageWrapper sender={sender}>
-            <span style={{wordBreak: 'break-word'}}>
+            <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
                 {text}
             </span>
+            {media && <Media {...media} isOwnMessage={isOwnMessage} />}
             <span style={timeStyle}>
                 {formatTime(time)}
             </span>
         </MessageWrapper>
-    )
+    );
 }
 
 export default MessageBubble

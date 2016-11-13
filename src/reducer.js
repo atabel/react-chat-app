@@ -7,13 +7,19 @@ const unique = (list) => [...new Set(list)];
 
 const messages = (state = [], {type, payload}) =>
     (type === 'ADD_MESSAGE')
-        ? [...state, payload]
+        ? [...state.filter(({sender, time}) => sender !== payload.sender || time !== payload.time), payload]
         : state;
 
-const conversations = (state = {}, {type, payload}) =>
-    (type === 'ADD_CONVERSATION')
-        ? {...state, [payload.id]: payload}
-        : state;
+const conversations = (state = {}, {type, payload}) => {
+    if (type === 'ADD_CONVERSATION') {
+        return {...state, [payload.id]: {...payload, connected: true}};
+    } else if (type === 'DISCONNECT_USER') {
+        if (payload in state) {
+            return {...state, [payload]: {...state[payload], connected: false}};
+        }
+    }
+    return state;
+}
 
 const currentConversation = (state = null, {type, payload}) => {
     if (type === 'OPEN_CONVERSATION') {

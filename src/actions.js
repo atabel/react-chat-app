@@ -3,6 +3,11 @@ export const addConversation = conversation => ({
     payload: conversation,
 });
 
+export const disconnectUser = userId => ({
+    type: 'DISCONNECT_USER',
+    payload: userId,
+});
+
 export const addMessage = message => ({
     type: 'ADD_MESSAGE',
     payload: message,
@@ -10,14 +15,14 @@ export const addMessage = message => ({
 
 export const sendMessage = (messageText) => (dispatch, getState, {chatClient}) => {
     const {currentUser, currentConversation} = getState();
+    const {time} = chatClient.sendMessage(messageText, currentConversation);
     const message = {
         sender: currentUser.id,
         text: messageText,
-        time: Date.now(),
+        time: time,
         receiver: currentConversation
     };
     dispatch(addMessage(message));
-    chatClient.sendMessage(messageText, currentConversation);
 };
 
 export const openConversation = conversationId => ({

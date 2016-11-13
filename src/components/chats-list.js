@@ -8,6 +8,7 @@ const chatRowStyle = {
     height: 64,
     display: 'flex',
     alignItems: 'center',
+    background: 'white',
 };
 
 const avatarStyle = {
@@ -28,15 +29,20 @@ const rowContentStyle = {
     borderBottom: '1px solid #eee',
 };
 
+const ellipsis = {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+};
+
 const titleStyle = {
+    ...ellipsis,
     fontWeight: 500,
 };
 
 const previewStyle = {
+    ...ellipsis,
     color: '#ccc',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
 };
 
 const getConversationPreview = ({lastMessage, id: conversationId}, me) => {
@@ -57,9 +63,21 @@ const getConversationPreview = ({lastMessage, id: conversationId}, me) => {
     }
 }
 
+const byTime = (conversationA, conversationB) => {
+    if (conversationA.lastMessage) {
+        if (conversationB.lastMessage) {
+            return conversationB.lastMessage.time - conversationA.lastMessage.time;
+        }
+        return -1;
+    }
+    return 1;
+};
+
 const ChatsList = ({conversations, onSelectChat, currentUser}) => (
     <FlipMove typeName="ul">
-        {conversations.map(conversation =>
+        {conversations
+            .sort(byTime)
+            .map(conversation =>
             <li
                 style={chatRowStyle}
                 key={conversation.id}
@@ -71,6 +89,7 @@ const ChatsList = ({conversations, onSelectChat, currentUser}) => (
                         {conversation.fullName}
                     </div>
                     <div style={previewStyle}>
+                        {conversation.connected === false && <span style={{color:'#2196F3'}}>(offline) </span>}
                         {getConversationPreview(conversation, currentUser) || `${conversation.fullName} has joined!`}
                     </div>
                 </div>

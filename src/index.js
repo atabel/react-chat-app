@@ -4,9 +4,19 @@ import App from './components/app';
 import chatClient from './chat-client';
 import createStore from './store';
 import {Provider} from 'react-redux';
+import {loadState, storeState} from './storage';
+import debounce from 'lodash/debounce';
 
 const initApp = (userInfo) => {
-    const store = createStore(userInfo, chatClient);
+    const persistedState = loadState(userInfo.id);
+
+    const store = createStore(persistedState, userInfo, chatClient);
+
+    store.subscribe(debounce(() => {
+        const {messages, conversations, currentUser} = store.getState();
+        storeState({messages, conversations}, currentUser.id);
+    }), 1000);
+
     ReactDOM.render(
         <Provider store={store}>
             <App />

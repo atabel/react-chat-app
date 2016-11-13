@@ -6,10 +6,12 @@
     "react-scripts": "0.7.0"
   },
   "dependencies": {
+    "lodash": "^4.16.6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-flip-move": "^2.6.4",
     "react-redux": "^4.4.5",
+    "reconnecting-websocket": "^3.0.2",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
   },

@@ -98,9 +98,9 @@ const Conversation = React.createClass({
                         >
                             {messages.sort(byTime)
                                 .map((message) => ({...message, sender: this.getUser(message.sender)}))
-                                .map(({sender, text, time}) =>
+                                .map(({sender, text, time, media}) =>
                                 <li key={`${sender.id}-${time}`} style={bubbleContainerStyle}>
-                                    <MessageBubble {...{sender, text, time}} me={this.props.currentUser} />
+                                    <MessageBubble {...{sender, text, time, media}} me={this.props.currentUser} />
                                 </li>
                             )}
                         </FlipMove>

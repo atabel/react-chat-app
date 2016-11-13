@@ -1,3 +1,5 @@
+import WebSocket from 'reconnecting-websocket';
+
 let ws;
 const listeners = {};
 
@@ -9,7 +11,7 @@ const handleMessage = m => {
     (listeners[action.type] || []).forEach(l => l(action));
 };
 
-const dev = process.env.NODE_ENV === 'dev';
+const dev = true;
 const PRODUCTION_CHAT_SERVER = 'wss://react-chat-server.herokuapp.com';
 const DEV_CHAT_SERVER = 'ws://localhost:8080';
 const chatServerUrl = dev ? DEV_CHAT_SERVER : PRODUCTION_CHAT_SERVER;
@@ -38,7 +40,7 @@ const chatClient = {
      * }
      */
     getUsers() {
-        this.send({type: 'getUsers', receiver: 'server'});
+        return this.send({type: 'getUsers', receiver: 'server'});
     },
 
     /**
@@ -48,7 +50,7 @@ const chatClient = {
      * the message is sent to all the users
      */
     sendMessage(messageText, receiver = 'all') {
-        this.send({type: 'message', receiver, payload: {text: messageText}});
+        return this.send({type: 'message', receiver, payload: {text: messageText}});
     },
 
     /**
@@ -70,6 +72,7 @@ const chatClient = {
         } else if (ws.readyState === OPEN) {
             ws.send(JSON.stringify(action));
         }
+        return action;
     },
 
     /**

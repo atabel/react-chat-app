@@ -2,9 +2,10 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import reducer from './reducer';
 
-export default (user, chatClient) =>
-    createStore(reducer, {
+const getInitialState = ({conversations, messages} = {}, user) => {
+    const state = {
         conversations: {
+            ...conversations,
             all: {
                 name: 'All',
                 fullName: 'All',
@@ -14,4 +15,17 @@ export default (user, chatClient) =>
             [user.id]: user,
         },
         currentUser: user,
-    }, applyMiddleware(thunk.withExtraArgument({chatClient})));
+        messages,
+    };
+
+    return state;
+};
+
+const configStore = (persistedState, user, chatClient) =>
+    createStore(
+        reducer,
+        getInitialState(persistedState, user),
+        applyMiddleware(thunk.withExtraArgument({chatClient}))
+    );
+
+export default configStore;
