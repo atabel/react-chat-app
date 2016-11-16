@@ -18,19 +18,25 @@ const titleStyle = {flex: 1};
 const Header = ({title, icon, onClickIcon, actions = [], style}) => (
     <header style={{...headerStyle, ...style}}>
             {icon && (
-                <div key="back" style={iconStyle}>
-                    <IconButton onPress={onClickIcon} icon={icon} />
-                </div>
+                <IconButton
+                    icon={icon}
+                    onPress={onClickIcon}
+                    style={iconStyle}
+                />
             )}
-            <h2 key="title" style={{...titleStyle, paddingLeft: icon ? 0 : 16}}>{title}</h2>
+            <h2
+                style={{...titleStyle, paddingLeft: icon ? 0 : 16}}
+            >
+                {title}
+            </h2>
             {actions.map(({title, icon, callback}) =>
-                <div key={title} style={iconStyle}>
-                    <IconButton
-                        icon={icon}
-                        label={title}
-                        onPress={callback}
-                    />
-                </div>
+                <IconButton
+                    key={title}
+                    icon={icon}
+                    onPress={callback}
+                    label={title}
+                    style={iconStyle}
+                />
             )}
     </header>
 );
