@@ -2,7 +2,7 @@ import React, {PropTypes as t} from 'react';
 import {connect} from 'react-redux';
 import chatClient from '../chat-client';
 import Conversation from './conversation';
-import ChatsList from './chats-list';
+import ChatsListScreen from './chats-list-screen';
 import FlipMove from 'react-flip-move';
 import AppScreen from './app-screen';
 import {getCurrentConversation} from '../reducer';
@@ -67,11 +67,7 @@ const App = React.createClass({
     },
 
     renderChatsList() {
-        return (
-            <AppScreen title="Chats">
-                <ChatsList />
-            </AppScreen>
-        );
+        return <ChatsListScreen />;
     },
 
     render() {

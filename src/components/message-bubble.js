@@ -86,7 +86,8 @@ const imgTimeStyle = {
     padding: '2px 4px',
     color: 'white',
     background: 'rgba(0,0,0,0.5)',
-    fontSize: 11
+    fontSize: 11,
+    borderRadius: 4,
 };
 
 const twoDigits = num =>

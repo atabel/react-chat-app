@@ -73,9 +73,13 @@ const byTime = (conversationA, conversationB) => {
     return 1;
 };
 
-const ChatsList = ({conversations, onSelectChat, currentUser}) => (
+const matchesSearch = searchFilter => conversation =>
+    conversation.fullName.toLowerCase().startsWith(searchFilter.toLowerCase());
+
+const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) => (
     <FlipMove typeName="ul">
         {conversations
+            .filter(matchesSearch(searchFilter))
             .sort(byTime)
             .map(conversation =>
             <li

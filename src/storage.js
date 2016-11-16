@@ -1,4 +1,4 @@
-const STORAGE_VERSION = 0;
+const STORAGE_VERSION = 1;
 
 const getStorageKey = userId =>
     `CHAT_APP_V${STORAGE_VERSION}_${userId}`;

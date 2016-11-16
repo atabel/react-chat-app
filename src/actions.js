@@ -8,10 +8,17 @@ export const disconnectUser = userId => ({
     payload: userId,
 });
 
-export const addMessage = message => ({
-    type: 'ADD_MESSAGE',
-    payload: message,
-})
+export const addMessage = message => (dispatch, getState) => {
+    const {currentUser} = getState();
+    const conversationId = message.sender === currentUser.id || message.receiver !== currentUser.id
+        ? message.receiver
+        : message.sender;
+
+    return dispatch({
+        type: 'ADD_MESSAGE',
+        payload: {...message, conversationId},
+    });
+};
 
 export const sendMessage = (messageText) => (dispatch, getState, {chatClient}) => {
     const {currentUser, currentConversation} = getState();

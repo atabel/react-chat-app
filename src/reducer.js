@@ -5,10 +5,24 @@ const flatMap = (list, fn) =>
 
 const unique = (list) => [...new Set(list)];
 
-const messages = (state = [], {type, payload}) =>
-    (type === 'ADD_MESSAGE')
-        ? [...state.filter(({sender, time}) => sender !== payload.sender || time !== payload.time), payload]
-        : state;
+const getMessageId = message =>
+    `${message.sender}_${message.time}`;
+
+const messages = (state = {}, {type, payload}) => {
+    if (type === 'ADD_MESSAGE') {
+        const {conversationId, ...message} = payload;
+        const messageId = getMessageId(message);
+        return {
+            ...state,
+            [conversationId]: {
+                ...state[conversationId],
+                [messageId]: {...message, id: messageId},
+            },
+        };
+    }
+
+    return state;
+}
 
 const conversations = (state = {}, {type, payload}) => {
     if (type === 'ADD_CONVERSATION') {
@@ -48,12 +62,9 @@ export const getConversation = getUser;
 
 export const getCurrentConversation = state => getConversation(state)(state.currentConversation);
 
-const getConversationMessages = (state, conversation) => {
-    const me = getCurrentUser(state) || {};
-    return state.messages.filter(({sender, receiver}) =>
-        (receiver === conversation)
-        || (sender === conversation && receiver === me.id)
-    );
+const getConversationMessages = (state, conversationId) => {
+    const messages = state.messages[conversationId] || {};
+    return Object.keys(messages).map(cid => messages[cid]);
 };
 
 export const getCurrentConversationMessages = state => {
