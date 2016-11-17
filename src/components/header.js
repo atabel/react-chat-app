@@ -17,27 +17,27 @@ const titleStyle = {flex: 1};
 
 const Header = ({title, icon, onClickIcon, actions = [], style}) => (
     <header style={{...headerStyle, ...style}}>
-            {icon && (
-                <IconButton
-                    icon={icon}
-                    onPress={onClickIcon}
-                    style={iconStyle}
-                />
-            )}
-            <h2
-                style={{...titleStyle, paddingLeft: icon ? 0 : 16}}
-            >
-                {title}
-            </h2>
-            {actions.map(({title, icon, callback}) =>
-                <IconButton
-                    key={title}
-                    icon={icon}
-                    onPress={callback}
-                    label={title}
-                    style={iconStyle}
-                />
-            )}
+        {icon && (
+            <IconButton
+                icon={icon}
+                onPress={onClickIcon}
+                style={iconStyle}
+            />
+        )}
+        <h2
+            style={{...titleStyle, paddingLeft: icon ? 0 : 16}}
+        >
+            {title}
+        </h2>
+        {actions.map(({title, icon, callback}) =>
+            <IconButton
+                key={title}
+                icon={icon}
+                onPress={callback}
+                label={title}
+                style={iconStyle}
+            />
+        )}
     </header>
 );
 

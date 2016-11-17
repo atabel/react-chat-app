@@ -77,7 +77,7 @@ const matchesSearch = searchFilter => conversation =>
     conversation.fullName.toLowerCase().startsWith(searchFilter.toLowerCase());
 
 const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) => (
-    <FlipMove typeName="ul">
+    <FlipMove typeName="ul" duration={160}>
         {conversations
             .filter(matchesSearch(searchFilter))
             .sort(byTime)

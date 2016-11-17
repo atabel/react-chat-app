@@ -2,6 +2,7 @@ import React from 'react';
 import AppScreen from './app-screen';
 import ChatsList from './chats-list';
 import ArrowBackIcon from './arrow-back-icon';
+import debounce from 'lodash/debounce'
 
 const inputStyle = {
     border: 'none',
@@ -19,12 +20,20 @@ const ChatsListScreen = React.createClass({
         };
     },
 
+    componentDidMount() {
+        this.handleFilterChange = debounce(this.handleFilterChange, 160);
+    },
+
     handleSearchPress() {
         this.setState({isSearching: true, searchText: ''});
     },
 
     handleBackPress() {
         this.setState({isSearching: false});
+    },
+
+    handleFilterChange(text) {
+        this.setState({searchText: text})
     },
 
     renderSearchInput() {
@@ -35,8 +44,8 @@ const ChatsListScreen = React.createClass({
                 style={inputStyle}
                 type="text"
                 placeholder="search..."
-                value={searchText}
-                onChange={(evt) => this.setState({searchText: evt.target.value})}
+                defaultValue={searchText}
+                onChange={(evt) => this.handleFilterChange(evt.target.value)}
             />
         );
     },
