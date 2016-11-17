@@ -37,6 +37,7 @@ const ChatBar = React.createClass({
         if (messageText.length > 0) {
             this.props.onSend(messageText);
             this.setState({text: ''});
+            this.input.focus();
         }
     },
 
@@ -45,6 +46,7 @@ const ChatBar = React.createClass({
         return (
             <form onSubmit={this.handleSubmit} style={barStyle}>
                 <input
+                    ref={node => this.input = node}
                     style={inputStyle}
                     type="text"
                     placeholder="type a message"
