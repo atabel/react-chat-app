@@ -45,20 +45,37 @@ const Conversation = React.createClass({
         users: t.arrayOf(t.object),
     },
 
+    getInitialState() {
+        return {windowHeight: window.innerHeight};
+    },
+
     componentWillUpdate(nextProps) {
-        const lastMessage = nextProps.messages[nextProps.messages.length - 1];
-        const iHaveJustSentAMessage = lastMessage.sender === nextProps.currentUser.id;
+        let iHaveJustSentAMessage = false;
+        if (nextProps.messages !== this.props.messages) {
+            const lastMessage = nextProps.messages[nextProps.messages.length - 1];
+            iHaveJustSentAMessage = lastMessage.sender === nextProps.currentUser.id;
+        }
         this.shouldScrollBottom = iHaveJustSentAMessage || getScrollToBottomDistance(this.list) === 0;
     },
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         if (this.shouldScrollBottom) {
             this.scrollToBottom();
         }
+        this.list.scrollTop += prevState.windowHeight - this.state.windowHeight;
     },
 
     componentDidMount() {
         this.scrollToBottom();
+        window.addEventListener('resize', this.handleResize);
+    },
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
+    },
+
+    handleResize() {
+        this.setState({windowHeight: window.innerHeight});
     },
 
     scrollToBottom() {
