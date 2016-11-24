@@ -29,7 +29,7 @@ const ChatsListScreen = React.createClass({
     },
 
     handleBackPress() {
-        this.setState({isSearching: false});
+        this.setState({isSearching: false, searchText: ''});
     },
 
     handleFilterChange(text) {
