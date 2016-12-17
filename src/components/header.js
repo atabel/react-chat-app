@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import IconButton from './icon-button';
 
@@ -15,9 +16,17 @@ const headerStyle = {
 const iconStyle = {padding: 16};
 const titleStyle = {flex: 1};
 
-const Header = ({title, icon, onClickIcon, actions = [], style}) => (
+type Props = {
+  title?: string,
+  icon?: string,
+  onClickIcon?: () => void,
+  actions?: Array<*>,
+  style?: Object,
+};
+
+const Header = ({title, icon, onClickIcon, actions = [], style}: Props) => (
     <header style={{...headerStyle, ...style}}>
-        {icon && (
+        {icon && onClickIcon && (
             <IconButton
                 icon={icon}
                 onPress={onClickIcon}

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import AppScreen from './app-screen';
 import ChatsList from './chats-list';
@@ -32,7 +33,7 @@ const ChatsListScreen = React.createClass({
         this.setState({isSearching: false, searchText: ''});
     },
 
-    handleFilterChange(text) {
+    handleFilterChange(text: string) {
         this.setState({searchText: text})
     },
 

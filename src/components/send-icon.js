@@ -1,8 +1,14 @@
+// @flow
 import React from 'react';
 
 const style = {transition: 'fill 0.3s ease'};
 
-const SendIcon = ({color, size = 24}) => (
+type Props = {
+    color: string,
+    size?: number,
+};
+
+const SendIcon = ({color, size = 24}: Props) => (
     <svg
         style={style}
         fill={color}

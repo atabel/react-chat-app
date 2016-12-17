@@ -1,3 +1,4 @@
+// @flow
 import React, {PropTypes as t} from 'react';
 import {connect} from 'react-redux';
 import SendIcon from './send-icon';
@@ -24,12 +25,14 @@ const buttonStyle = {
 
 const ChatBar = React.createClass({
     propTypes: {
-        onSend: t.func,
+        onSend: t.func.isRequired,
     },
 
     getInitialState() {
         return {text: ''};
     },
+
+    input: null,
 
     handleSubmit(e) {
         e.preventDefault();
@@ -37,7 +40,9 @@ const ChatBar = React.createClass({
         if (messageText.length > 0) {
             this.props.onSend(messageText);
             this.setState({text: ''});
-            this.input.focus();
+            if (this.input) {
+                this.input.focus();
+            }
         }
     },
 

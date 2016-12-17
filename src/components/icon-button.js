@@ -1,8 +1,16 @@
+// @flow
 import React from 'react'
 
 const iconStyle = {width: 24, height: 24};
 
-const IconButton = ({icon, label, onPress, style}) => (
+type Props = {
+  icon: string,
+  label?: string,
+  onPress: () => void,
+  style?: Object,
+};
+
+const IconButton = ({icon, label, onPress, style}: Props) => (
     typeof icon === 'string' ? (
         <img
             src={icon}

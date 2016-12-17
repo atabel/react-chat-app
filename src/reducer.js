@@ -1,9 +1,10 @@
+// @flow weak
 import {combineReducers} from 'redux';
 
 const flatMap = (list, fn) =>
     [].concat(...list.map(fn));
 
-const unique = (list) => [...new Set(list)];
+const unique = (list) => Array.from(new Set(list));
 
 const getMessageId = message =>
     `${message.sender}_${message.time}`;

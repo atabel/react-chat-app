@@ -1,3 +1,4 @@
+// @flow weak
 export const addConversation = conversation => ({
     type: 'ADD_CONVERSATION',
     payload: conversation,
@@ -40,4 +41,3 @@ export const openConversation = conversationId => ({
 export const closeConversation = () => ({
     type: 'CLOSE_CONVERSATION',
 });
-

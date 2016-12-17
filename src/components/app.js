@@ -1,3 +1,4 @@
+// @flow
 import React, {PropTypes as t} from 'react';
 import {connect} from 'react-redux';
 import chatClient from '../chat-client';
@@ -16,10 +17,10 @@ import {
 const App = React.createClass({
 
     propTypes: {
-        onReceiveMessage: t.func,
-        onReceiveConversation: t.func,
-        onCloseConversation: t.func,
-        onUserDisconnects: t.func,
+        onReceiveMessage: t.func.isRequired,
+        onReceiveConversation: t.func.isRequired,
+        onCloseConversation: t.func.isRequired,
+        onUserDisconnects: t.func.isRequired,
     },
 
     getInitialState() {

@@ -1,3 +1,4 @@
+// @flow
 import React, {PropTypes as t} from 'react';
 import {connect} from 'react-redux';
 import chatBackground from '../assets/background2.png';
@@ -7,7 +8,7 @@ import {getCurrentConversationMessages, getCurrentConversationUsers, getCurrentU
 import MessageBubble from './message-bubble';
 
 const getScrollToBottomDistance = (node) =>
-    node.scrollHeight - (node.scrollTop + node.offsetHeight);
+    node ? node.scrollHeight - (node.scrollTop + node.offsetHeight) : 0;
 
 const byTime = (message1, message2) =>
     message1.time - message2.time;
@@ -38,12 +39,16 @@ const Conversation = React.createClass({
     propTypes: {
         messages: t.arrayOf(t.shape({
             text: t.string,
-            time: t.number,
+            time: t.number.isRequired,
             sender: t.string, //id
-        })),
-        currentUser: t.object,
-        users: t.arrayOf(t.object),
+            media: t.object,
+        })).isRequired,
+        currentUser: t.object.isRequired,
+        users: t.arrayOf(t.object).isRequired,
     },
+
+    shouldScrollBottom: false,
+    list: null,
 
     getInitialState() {
         return {windowHeight: window.innerHeight};
@@ -62,7 +67,9 @@ const Conversation = React.createClass({
         if (this.shouldScrollBottom) {
             this.scrollToBottom();
         }
-        this.list.scrollTop += prevState.windowHeight - this.state.windowHeight;
+        if (this.list) {
+            this.list.scrollTop += prevState.windowHeight - this.state.windowHeight;
+        }
     },
 
     componentDidMount() {
@@ -79,7 +86,9 @@ const Conversation = React.createClass({
     },
 
     scrollToBottom() {
-        this.list.scrollTop = this.list.scrollHeight;
+        if (this.list) {
+            this.list.scrollTop = this.list.scrollHeight;
+        }
     },
 
     getMessagePosition(node) {
@@ -116,10 +125,10 @@ const Conversation = React.createClass({
                             getPosition={this.getMessagePosition}
                         >
                             {messages.sort(byTime)
-                                .map((message) => ({...message, sender: this.getUser(message.sender)}))
-                                .map(({sender, text, time, media}) =>
-                                <li key={`${sender.id}-${time}`} style={bubbleContainerStyle}>
-                                    <MessageBubble {...{sender, text, time, media}} me={this.props.currentUser} />
+                                .map((message) => ({...message, senderUser: this.getUser(message.sender)}))
+                                .map(({senderUser, text, time, media}) =>
+                                <li key={`${senderUser.id}-${time}`} style={bubbleContainerStyle}>
+                                    <MessageBubble {...{sender: senderUser, text, time, media}} me={this.props.currentUser} />
                                 </li>
                             )}
                         </FlipMove>

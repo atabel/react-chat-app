@@ -1,3 +1,4 @@
+// @flow
 import WebSocket from 'reconnecting-websocket';
 
 let ws;
@@ -22,7 +23,7 @@ const chatClient = {
      * Inits the chat connection with the server
      * @param {string} token the google auth session token
      */
-    init(token) {
+    init(token: string) {
         ws = new WebSocket(`${chatServerUrl}/${token}`);
         ws.addEventListener('message', handleMessage);
     },
@@ -49,7 +50,7 @@ const chatClient = {
      * @param {string} receiver userId of the receiver. When not provided,
      * the message is sent to all the users
      */
-    sendMessage(messageText, receiver = 'all') {
+    sendMessage(messageText: string, receiver: string = 'all') {
         return this.send({type: 'message', receiver, payload: {text: messageText}});
     },
 
@@ -65,7 +66,7 @@ const chatClient = {
      * }
      * @return {[type]} [description]
      */
-    send(action) {
+    send(action: Object) {
         action.time = action.time || Date.now();
         if (ws.readyState === CONNECTING) {
             setTimeout(() => this.send(action), 100);
@@ -83,7 +84,7 @@ const chatClient = {
      * @return {Function} dettach function to remove the event
      * listener.
      */
-    on(event, listener) {
+    on(event: string, listener: Function) {
         if (event in listeners) {
             listeners[event].push(listener);
         } else {
@@ -97,7 +98,7 @@ const chatClient = {
      * @param {string} event the event type
      * @param {Function} listenerToRemove
      */
-    off(event, listenerToRemove) {
+    off(event: string, listenerToRemove: Function) {
         if (event in listeners) {
             listeners[event] = listeners[event].filter(l => l !== listenerToRemove);
         }

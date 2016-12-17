@@ -1,3 +1,4 @@
+/* @flow */
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
@@ -23,13 +24,13 @@ const getInitialState = ({conversations, messages} = {}, user) => {
     return state;
 };
 
-const configStore = (user, chatClient) => {
+const configStore = (user: Object, chatClient: Object) => {
     const persistedState = loadState(user.id);
 
     const store = createStore(
         reducer,
         getInitialState(persistedState, user),
-        applyMiddleware(thunk.withExtraArgument({chatClient}))
+        applyMiddleware(thunk.withExtraArgument({chatClient})),
     );
 
     store.subscribe(debounce(() => {

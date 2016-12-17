@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 const userNameColors = [
@@ -172,7 +173,15 @@ const Media = ({
 const isImg = ({title, description, image, url} = {}) =>
     url && !title && !description && !image;
 
-const MessageBubble = ({sender, text, media, time, me}) => {
+type Props = {
+    sender: Object,
+    text: string,
+    media: Object,
+    time: number,
+    me: Object,
+};
+
+const MessageBubble = ({sender, text, media, time, me}: Props) => {
     const isOwnMessage = sender.id === me.id;
 
     const MessageWrapper = isOwnMessage ? OwnMessage : OtherMessage;
