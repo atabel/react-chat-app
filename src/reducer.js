@@ -22,7 +22,7 @@ const messages = (state = {}, {type, payload}) => {
     }
 
     return state;
-}
+};
 
 const conversations = (state = {}, {type, payload}) => {
     if (type === 'ADD_CONVERSATION') {
@@ -33,7 +33,7 @@ const conversations = (state = {}, {type, payload}) => {
         }
     }
     return state;
-}
+};
 
 const currentConversation = (state = null, {type, payload}) => {
     if (type === 'OPEN_CONVERSATION') {
