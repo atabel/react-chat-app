@@ -2,11 +2,26 @@
 import React from 'react';
 
 const userNameColors = [
-    '#35cd96', '#6bcbef', '#e542a3', '#91ab01',
-    '#ffa97a', '#1f7aec', '#dfb610', '#029d00',
-    '#8b7add', '#fe7c7f', '#ba33dc', '#59d368',
-    '#b04632', '#fd85d4', '#8393ca', '#ff8f2c',
-    '#a3e2cb', '#b4876e', '#c90379', '#ef4b4f',
+    '#35cd96',
+    '#6bcbef',
+    '#e542a3',
+    '#91ab01',
+    '#ffa97a',
+    '#1f7aec',
+    '#dfb610',
+    '#029d00',
+    '#8b7add',
+    '#fe7c7f',
+    '#ba33dc',
+    '#59d368',
+    '#b04632',
+    '#fd85d4',
+    '#8393ca',
+    '#ff8f2c',
+    '#a3e2cb',
+    '#b4876e',
+    '#c90379',
+    '#ef4b4f',
 ];
 
 const colorForUserId = {};
@@ -91,8 +106,7 @@ const imgTimeStyle = {
     borderRadius: 4,
 };
 
-const twoDigits = num =>
-    num >= 10 ? `${num}` : `0${num}`;
+const twoDigits = num => num >= 10 ? `${num}` : `0${num}`;
 
 const formatTime = timestamp => {
     const date = new Date(timestamp);
@@ -146,14 +160,16 @@ const OtherImage = ({sender, children}) => (
     </div>
 );
 
-const Media = ({
-    url,
-    title,
-    description,
-    image,
-    embed,
-    isOwnMessage,
-}) => (
+const Media = (
+    {
+        url,
+        title,
+        description,
+        image,
+        embed,
+        isOwnMessage,
+    }
+) => (
     <div
         style={{
             background: isOwnMessage ? '#72bcf8' : '#eee',
@@ -170,8 +186,7 @@ const Media = ({
     </div>
 );
 
-const isImg = ({title, description, image, url} = {}) =>
-    url && !title && !description && !image;
+const isImg = ({title, description, image, url} = {}) => url && !title && !description && !image;
 
 type Props = {
     sender: Object,
@@ -187,26 +202,24 @@ const MessageBubble = ({sender, text, media, time, me}: Props) => {
     const MessageWrapper = isOwnMessage ? OwnMessage : OtherMessage;
     const ImgWrapper = isOwnMessage ? OwnImage : OtherImage;
 
-    return isImg(media) ? (
-        <ImgWrapper sender={sender}>
-            <div style={{position: 'relative'}}>
-                <img style={{width: '100%', borderRadius: 4, overflow: 'hidden'}} src={media.url} alt={media.url} />
-                <span style={imgTimeStyle}>
-                    {formatTime(time)}
-                </span>
-            </div>
-        </ImgWrapper>
-    ) : (
-        <MessageWrapper sender={sender}>
-            <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
-                {text}
-            </span>
-            {media && <Media {...media} isOwnMessage={isOwnMessage} />}
-            <span style={timeStyle}>
-                {formatTime(time)}
-            </span>
-        </MessageWrapper>
-    );
-}
+    return isImg(media)
+        ? <ImgWrapper sender={sender}>
+              <div style={{position: 'relative'}}>
+                  <img style={{width: '100%', borderRadius: 4, overflow: 'hidden'}} src={media.url} alt={media.url} />
+                  <span style={imgTimeStyle}>
+                      {formatTime(time)}
+                  </span>
+              </div>
+          </ImgWrapper>
+        : <MessageWrapper sender={sender}>
+              <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
+                  {text}
+              </span>
+              {media && <Media {...media} isOwnMessage={isOwnMessage} />}
+              <span style={timeStyle}>
+                  {formatTime(time)}
+              </span>
+          </MessageWrapper>;
+};
 
-export default MessageBubble
+export default MessageBubble;

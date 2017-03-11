@@ -2,13 +2,11 @@
 import {combineReducers} from 'redux';
 import type {Message, Conversation, User} from './models';
 
-const flatMap = (list, fn) =>
-    [].concat(...list.map(fn));
+const flatMap = (list, fn) => [].concat(...list.map(fn));
 
-const unique = (list) => Array.from(new Set(list));
+const unique = list => Array.from(new Set(list));
 
-const getMessageId = message =>
-    `${message.sender}_${message.time}`;
+const getMessageId = message => `${message.sender}_${message.time}`;
 
 const messages = (state = {}, {type, payload}) => {
     if (type === 'ADD_MESSAGE') {
@@ -24,7 +22,7 @@ const messages = (state = {}, {type, payload}) => {
     }
 
     return state;
-}
+};
 
 const conversations = (state = {}, {type, payload}) => {
     if (type === 'ADD_CONVERSATION') {
@@ -35,10 +33,9 @@ const conversations = (state = {}, {type, payload}) => {
         }
     }
     return state;
-}
+};
 
-const currentUser = (state = null, {type, payload}) =>
-    (type === 'SET_CURRENT_USER') ? payload : state;
+const currentUser = (state = null, {type, payload}) => type === 'SET_CURRENT_USER' ? payload : state;
 
 export default combineReducers({
     currentUser,
@@ -69,8 +66,9 @@ export const getConversationMessages = (state: State, conversationId: string): A
 };
 
 export const getConversationUsers = (state: State, conversationId: string): Array<User> =>
-    unique(flatMap(getConversationMessages(state, conversationId), ({sender, receiver}) => [sender, receiver]))
-        .map(getUser(state));
+    unique(flatMap(getConversationMessages(state, conversationId), ({sender, receiver}) => [sender, receiver])).map(
+        getUser(state)
+    );
 
 const getLastMessage = (state, conversation) => {
     const messages = getConversationMessages(state, conversation);
@@ -90,10 +88,12 @@ export const getConversations = (state: State): Array<Conversation> => {
             const lastMessage = getLastMessage(state, conversation.id);
             return {
                 ...conversation,
-                lastMessage: lastMessage ? {
-                    ...lastMessage,
-                    sender: getUser(state)(lastMessage.sender),
-                } : null,
+                lastMessage: lastMessage
+                    ? {
+                          ...lastMessage,
+                          sender: getUser(state)(lastMessage.sender),
+                      }
+                    : null,
             };
         });
 };

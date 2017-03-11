@@ -6,8 +6,7 @@ import chatClient from './chat-client';
 import configureStore from './store';
 import {Provider} from 'react-redux';
 
-const initApp = (userInfo) => {
-
+const initApp = userInfo => {
     const store = configureStore(userInfo, chatClient);
 
     ReactDOM.render(
@@ -18,7 +17,7 @@ const initApp = (userInfo) => {
     );
 };
 
-window.onSignIn = (googleUser) => {
+window.onSignIn = googleUser => {
     const profile = googleUser.getBasicProfile();
     const token = googleUser.getAuthResponse().id_token;
 
@@ -35,11 +34,14 @@ window.onSignIn = (googleUser) => {
 
     chatClient.init(token);
 
-    setTimeout(() => {
-        const signInButton = document.getElementById('signInButton');
-        if (signInButton) {
-            signInButton.remove();
-        }
-        initApp(userInfo);
-    }, 500);
+    setTimeout(
+        () => {
+            const signInButton = document.getElementById('signInButton');
+            if (signInButton) {
+                signInButton.remove();
+            }
+            initApp(userInfo);
+        },
+        500
+    );
 };

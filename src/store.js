@@ -32,13 +32,16 @@ const configStore = (user: User, chatClient: Object) => {
     const store = createStore(
         reducer,
         getInitialState(persistedState, user),
-        applyMiddleware(thunk.withExtraArgument({chatClient})),
+        applyMiddleware(thunk.withExtraArgument({chatClient}))
     );
 
-    store.subscribe(debounce(() => {
-        const {messages, conversations, currentUser}: State = store.getState();
-        storeState({messages, conversations}, currentUser.id);
-    }), 1000);
+    store.subscribe(
+        debounce(() => {
+            const {messages, conversations, currentUser}: State = store.getState();
+            storeState({messages, conversations}, currentUser.id);
+        }),
+        1000
+    );
 
     return store;
 };

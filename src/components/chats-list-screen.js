@@ -4,7 +4,7 @@ import {Route} from 'react-router-dom';
 import AppScreen from './app-screen';
 import ChatsList from './chats-list';
 import ArrowBackIcon from './arrow-back-icon';
-import debounce from 'lodash/debounce'
+import debounce from 'lodash/debounce';
 
 const inputStyle = {
     border: 'none',
@@ -14,20 +14,22 @@ const inputStyle = {
 };
 
 const ChatsListScreen = React.createClass({
-
     getInitialState() {
         return {
             isSearching: false,
-            searchText: ''
+            searchText: '',
         };
     },
 
     handleFilterChange: () => {},
 
     componentDidMount() {
-        this.handleFilterChange = debounce((text) => {
-            this.setState({searchText: text});
-        }, 160);
+        this.handleFilterChange = debounce(
+            text => {
+                this.setState({searchText: text});
+            },
+            160
+        );
     },
 
     renderSearchInput() {
@@ -39,7 +41,7 @@ const ChatsListScreen = React.createClass({
                 type="text"
                 placeholder="search..."
                 defaultValue={searchText}
-                onChange={(evt) => this.handleFilterChange(evt.target.value)}
+                onChange={evt => this.handleFilterChange(evt.target.value)}
             />
         );
     },
@@ -54,11 +56,17 @@ const ChatsListScreen = React.createClass({
                         icon={isSearching && <ArrowBackIcon style={{fill: 'currentColor'}} />}
                         onClickIcon={history.goBack}
                         title={isSearching ? this.renderSearchInput() : 'Chats'}
-                        actions={isSearching ? [] : [{
-                            icon: require('../assets/ic_search.svg'),
-                            title: 'Search',
-                            callback: () => history.push('/conversations/search')
-                        }]}
+                        actions={
+                            isSearching
+                                ? []
+                                : [
+                                      {
+                                          icon: require('../assets/ic_search.svg'),
+                                          title: 'Search',
+                                          callback: () => history.push('/conversations/search'),
+                                      },
+                                  ]
+                        }
                     >
                         <ChatsList searchFilter={isSearching ? searchText : ''} />
                     </AppScreen>

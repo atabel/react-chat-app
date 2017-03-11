@@ -14,26 +14,28 @@ export const disconnectUser = (userId: string) => ({
     payload: userId,
 });
 
-export const addMessage = (message: Message) => (dispatch: Dispatch, getState: GetState) => {
-    const {currentUser} = getState();
-    const conversationId = message.sender === currentUser.id || message.receiver !== currentUser.id
-        ? message.receiver
-        : message.sender;
+export const addMessage = (message: Message) =>
+    (dispatch: Dispatch, getState: GetState) => {
+        const {currentUser} = getState();
+        const conversationId = message.sender === currentUser.id || message.receiver !== currentUser.id
+            ? message.receiver
+            : message.sender;
 
-    return dispatch({
-        type: 'ADD_MESSAGE',
-        payload: {...message, conversationId},
-    });
-};
-
-export const sendMessage = (messageText: string, conversationId: string) => (dispatch: Dispatch, getState: GetState, {chatClient}: Object) => {
-    const {currentUser} = getState();
-    const {time} = chatClient.sendMessage(messageText, conversationId);
-    const message = {
-        sender: currentUser.id,
-        text: messageText,
-        time: time,
-        receiver: conversationId
+        return dispatch({
+            type: 'ADD_MESSAGE',
+            payload: {...message, conversationId},
+        });
     };
-    dispatch(addMessage(message));
-};
+
+export const sendMessage = (messageText: string, conversationId: string) =>
+    (dispatch: Dispatch, getState: GetState, {chatClient}: Object) => {
+        const {currentUser} = getState();
+        const {time} = chatClient.sendMessage(messageText, conversationId);
+        const message = {
+            sender: currentUser.id,
+            text: messageText,
+            time: time,
+            receiver: conversationId,
+        };
+        dispatch(addMessage(message));
+    };

@@ -18,7 +18,6 @@ const DEV_CHAT_SERVER = 'ws://localhost:8080';
 const chatServerUrl = dev ? DEV_CHAT_SERVER : PRODUCTION_CHAT_SERVER;
 
 const chatClient = {
-
     /**
      * Inits the chat connection with the server
      * @param {string} token the google auth session token

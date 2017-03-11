@@ -60,16 +60,14 @@ const getConversationPreview = ({lastMessage, id: conversationId}, me) => {
         const senderName = sender.id === me.id ? 'me' : sender.name;
         return (
             <span>
-                {isGroupChat && (
-                    <span style={{color:'#2196F3'}}>{`${senderName}: `}</span>
-                )}
+                {isGroupChat && <span style={{color: '#2196F3'}}>{`${senderName}: `}</span>}
                 <span>{lastMessage.text}</span>
             </span>
-        )
+        );
     } else {
         return isGroupChat ? 'Talk with everyone!' : null;
     }
-}
+};
 
 const byTime = (conversationA, conversationB) => {
     if (conversationA.lastMessage) {
@@ -81,19 +79,13 @@ const byTime = (conversationA, conversationB) => {
     return 1;
 };
 
-const matchesSearch = searchFilter => conversation =>
-    conversation.fullName.toLowerCase().startsWith(searchFilter.toLowerCase());
+const matchesSearch = searchFilter =>
+    conversation => conversation.fullName.toLowerCase().startsWith(searchFilter.toLowerCase());
 
 const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) => (
     <FlipMove typeName="ul" duration={160}>
-        {conversations
-            .filter(matchesSearch(searchFilter))
-            .sort(byTime)
-            .map(conversation =>
-            <li
-                style={chatRowStyle}
-                key={conversation.id}
-            >
+        {conversations.filter(matchesSearch(searchFilter)).sort(byTime).map(conversation => (
+            <li style={chatRowStyle} key={conversation.id}>
                 <Link to={`/conversation/${conversation.id}`} style={chatLinkStyle}>
                     <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
                     <div style={rowContentStyle}>
@@ -101,19 +93,18 @@ const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}
                             {conversation.fullName}
                         </div>
                         <div style={previewStyle}>
-                            {conversation.connected === false && <span style={{color:'#2196F3'}}>(offline) </span>}
-                            {getConversationPreview(conversation, currentUser) || `${conversation.fullName} has joined!`}
+                            {conversation.connected === false && <span style={{color: '#2196F3'}}>(offline) </span>}
+                            {getConversationPreview(conversation, currentUser) ||
+                                `${conversation.fullName} has joined!`}
                         </div>
                     </div>
                 </Link>
             </li>
-        )}
+        ))}
     </FlipMove>
 );
 
-export default connect(
-    state => ({
-        conversations: getConversations(state),
-        currentUser: getCurrentUser(state),
-    })
-)(ChatsList);
+export default connect(state => ({
+    conversations: getConversations(state),
+    currentUser: getCurrentUser(state),
+}))(ChatsList);

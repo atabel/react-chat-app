@@ -1,8 +1,7 @@
 // @flow
 const STORAGE_VERSION = 1;
 
-const getStorageKey = userId =>
-    `CHAT_APP_V${STORAGE_VERSION}_${userId}`;
+const getStorageKey = userId => `CHAT_APP_V${STORAGE_VERSION}_${userId}`;
 
 export const loadState = (userId: string): Object => {
     try {
