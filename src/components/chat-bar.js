@@ -1,6 +1,7 @@
 // @flow
 import React, {PropTypes as t} from 'react';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import SendIcon from './send-icon';
 import {sendMessage} from '../actions';
 
@@ -38,7 +39,8 @@ const ChatBar = React.createClass({
         e.preventDefault();
         const messageText = this.state.text.trim();
         if (messageText.length > 0) {
-            this.props.onSend(messageText);
+            const {params: {conversationId}} = this.props.match;
+            this.props.onSend(messageText, conversationId);
             this.setState({text: ''});
             if (this.input) {
                 this.input.focus();
@@ -69,4 +71,4 @@ const ChatBar = React.createClass({
 export default connect(
     null,
     {onSend: sendMessage}
-)(ChatBar);
+)(withRouter(ChatBar));

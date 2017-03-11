@@ -190,7 +190,7 @@ const MessageBubble = ({sender, text, media, time, me}: Props) => {
     return isImg(media) ? (
         <ImgWrapper sender={sender}>
             <div style={{position: 'relative'}}>
-                <img style={{width: '100%', borderRadius: 4}} src={media.url} alt={media.url} />
+                <img style={{width: '100%', borderRadius: 4, overflow: 'hidden'}} src={media.url} alt={media.url} />
                 <span style={imgTimeStyle}>
                     {formatTime(time)}
                 </span>

@@ -3,13 +3,20 @@ import React from 'react';
 import {connect} from 'react-redux';
 import FlipMove from 'react-flip-move';
 import {getConversations, getCurrentUser} from '../reducer';
-import {openConversation} from '../actions';
+import {Link} from 'react-router-dom';
 
 const chatRowStyle = {
     height: 64,
     display: 'flex',
-    alignItems: 'center',
     background: 'white',
+};
+
+const chatLinkStyle = {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    color: 'inherit',
+    textDecoration: 'inherit',
 };
 
 const avatarStyle = {
@@ -86,18 +93,19 @@ const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}
             <li
                 style={chatRowStyle}
                 key={conversation.id}
-                onClick={() => onSelectChat(conversation.id)}
             >
-                <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
-                <div style={rowContentStyle}>
-                    <div style={titleStyle}>
-                        {conversation.fullName}
+                <Link to={`/conversation/${conversation.id}`} style={chatLinkStyle}>
+                    <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
+                    <div style={rowContentStyle}>
+                        <div style={titleStyle}>
+                            {conversation.fullName}
+                        </div>
+                        <div style={previewStyle}>
+                            {conversation.connected === false && <span style={{color:'#2196F3'}}>(offline) </span>}
+                            {getConversationPreview(conversation, currentUser) || `${conversation.fullName} has joined!`}
+                        </div>
                     </div>
-                    <div style={previewStyle}>
-                        {conversation.connected === false && <span style={{color:'#2196F3'}}>(offline) </span>}
-                        {getConversationPreview(conversation, currentUser) || `${conversation.fullName} has joined!`}
-                    </div>
-                </div>
+                </Link>
             </li>
         )}
     </FlipMove>
@@ -107,6 +115,5 @@ export default connect(
     state => ({
         conversations: getConversations(state),
         currentUser: getCurrentUser(state),
-    }),
-    {onSelectChat: openConversation}
+    })
 )(ChatsList);

@@ -36,16 +36,6 @@ const conversations = (state = {}, {type, payload}) => {
     return state;
 }
 
-const currentConversation = (state = null, {type, payload}) => {
-    if (type === 'OPEN_CONVERSATION') {
-        return payload;
-    } else if (type === 'CLOSE_CONVERSATION') {
-        return null;
-    } else {
-        return state;
-    }
-};
-
 const currentUser = (state = null, {type, payload}) =>
     (type === 'SET_CURRENT_USER') ? payload : state;
 
@@ -53,30 +43,20 @@ export default combineReducers({
     currentUser,
     messages,
     conversations,
-    currentConversation,
 });
 
 export const getCurrentUser = state => state.currentUser;
 
 export const getUser = state => userId => state.conversations[userId];
-export const getConversation = getUser;
+export const getConversation = (state, conversationId) => getUser(state)(conversationId);
 
-export const getCurrentConversation = state => getConversation(state)(state.currentConversation);
-
-const getConversationMessages = (state, conversationId) => {
+export const getConversationMessages = (state, conversationId) => {
     const messages = state.messages[conversationId] || {};
     return Object.keys(messages).map(cid => messages[cid]);
 };
 
-export const getCurrentConversationMessages = state => {
-    const currentConversation = getCurrentConversation(state);
-    return currentConversation
-        ? getConversationMessages(state, currentConversation.id)
-        : [];
-};
-
-export const getCurrentConversationUsers = state =>
-    unique(flatMap(getCurrentConversationMessages(state), ({sender, receiver}) => [sender, receiver]))
+export const getConversationUsers = (state, conversationId) =>
+    unique(flatMap(getConversationMessages(state, conversationId), ({sender, receiver}) => [sender, receiver]))
         .map(getUser(state));
 
 const getLastMessage = (state, conversation) => {

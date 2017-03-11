@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import chatBackground from '../assets/background2.png';
 import FlipMove from 'react-flip-move';
 import ChatBar from './chat-bar';
-import {getCurrentConversationMessages, getCurrentConversationUsers, getCurrentUser} from '../reducer';
+import {getConversationMessages, getConversationUsers, getCurrentUser} from '../reducer';
 import MessageBubble from './message-bubble';
 
 const getScrollToBottomDistance = (node) =>
@@ -57,8 +57,10 @@ const Conversation = React.createClass({
     componentWillUpdate(nextProps) {
         let iHaveJustSentAMessage = false;
         if (nextProps.messages !== this.props.messages) {
-            const lastMessage = nextProps.messages[nextProps.messages.length - 1];
-            iHaveJustSentAMessage = lastMessage.sender === nextProps.currentUser.id;
+            if (nextProps.messages.length > 0) {
+                const lastMessage = nextProps.messages[nextProps.messages.length - 1];
+                iHaveJustSentAMessage = lastMessage.sender === nextProps.currentUser.id;
+            }
         }
         this.shouldScrollBottom = iHaveJustSentAMessage || getScrollToBottomDistance(this.list) === 0;
     },
@@ -141,9 +143,9 @@ const Conversation = React.createClass({
 });
 
 export default connect(
-    state => ({
-        messages: getCurrentConversationMessages(state),
-        users: getCurrentConversationUsers(state),
+    (state, props) => ({
+        messages: getConversationMessages(state, props.conversationId),
+        users: getConversationUsers(state, props.conversationId),
         currentUser: getCurrentUser(state),
     })
 )(Conversation);

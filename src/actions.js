@@ -21,23 +21,14 @@ export const addMessage = message => (dispatch, getState) => {
     });
 };
 
-export const sendMessage = (messageText) => (dispatch, getState, {chatClient}) => {
-    const {currentUser, currentConversation} = getState();
-    const {time} = chatClient.sendMessage(messageText, currentConversation);
+export const sendMessage = (messageText, conversationId) => (dispatch, getState, {chatClient}) => {
+    const {currentUser} = getState();
+    const {time} = chatClient.sendMessage(messageText, conversationId);
     const message = {
         sender: currentUser.id,
         text: messageText,
         time: time,
-        receiver: currentConversation
+        receiver: conversationId
     };
     dispatch(addMessage(message));
 };
-
-export const openConversation = conversationId => ({
-    type: 'OPEN_CONVERSATION',
-    payload: conversationId,
-});
-
-export const closeConversation = () => ({
-    type: 'CLOSE_CONVERSATION',
-});
