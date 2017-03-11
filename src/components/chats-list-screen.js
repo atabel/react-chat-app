@@ -22,12 +22,12 @@ const ChatsListScreen = React.createClass({
         };
     },
 
-    componentDidMount() {
-        this.handleFilterChange = debounce(this.handleFilterChange, 160);
-    },
+    handleFilterChange: () => {},
 
-    handleFilterChange(text: string) {
-        this.setState({searchText: text})
+    componentDidMount() {
+        this.handleFilterChange = debounce((text) => {
+            this.setState({searchText: text});
+        }, 160);
     },
 
     renderSearchInput() {

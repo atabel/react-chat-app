@@ -4,6 +4,8 @@ import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
 import {loadState, storeState} from './storage';
 import reducer from './reducer';
+import type {State} from './reducer';
+import type {User} from './models';
 
 const getInitialState = ({conversations, messages} = {}, user) => {
     const state = {
@@ -24,7 +26,7 @@ const getInitialState = ({conversations, messages} = {}, user) => {
     return state;
 };
 
-const configStore = (user: Object, chatClient: Object) => {
+const configStore = (user: User, chatClient: Object) => {
     const persistedState = loadState(user.id);
 
     const store = createStore(
@@ -34,7 +36,7 @@ const configStore = (user: Object, chatClient: Object) => {
     );
 
     store.subscribe(debounce(() => {
-        const {messages, conversations, currentUser} = store.getState();
+        const {messages, conversations, currentUser}: State = store.getState();
         storeState({messages, conversations}, currentUser.id);
     }), 1000);
 

@@ -1,5 +1,6 @@
-// @flow weak
+// @flow
 import {combineReducers} from 'redux';
+import type {Message, Conversation, User} from './models';
 
 const flatMap = (list, fn) =>
     [].concat(...list.map(fn));
@@ -45,17 +46,29 @@ export default combineReducers({
     conversations,
 });
 
-export const getCurrentUser = state => state.currentUser;
+export type State = {
+    currentUser: User,
+    messages: {
+        [conversationId: string]: {
+            [messageId: string]: Message,
+        },
+    },
+    conversations: {
+        [conversationId: string]: Conversation,
+    },
+};
 
-export const getUser = state => userId => state.conversations[userId];
-export const getConversation = (state, conversationId) => getUser(state)(conversationId);
+export const getCurrentUser = (state: State): User => state.currentUser;
 
-export const getConversationMessages = (state, conversationId) => {
+export const getUser = (state: State) => (userId: string): User => state.conversations[userId];
+export const getConversation = (state: State, conversationId: string): Conversation => getUser(state)(conversationId);
+
+export const getConversationMessages = (state: State, conversationId: string): Array<Message> => {
     const messages = state.messages[conversationId] || {};
     return Object.keys(messages).map(cid => messages[cid]);
 };
 
-export const getConversationUsers = (state, conversationId) =>
+export const getConversationUsers = (state: State, conversationId: string): Array<User> =>
     unique(flatMap(getConversationMessages(state, conversationId), ({sender, receiver}) => [sender, receiver]))
         .map(getUser(state));
 
@@ -68,7 +81,7 @@ const getLastMessage = (state, conversation) => {
     }
 };
 
-export const getConversations = state => {
+export const getConversations = (state: State): Array<Conversation> => {
     const me = getCurrentUser(state);
     return Object.keys(state.conversations)
         .filter(id => id !== me.id)

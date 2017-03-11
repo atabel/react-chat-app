@@ -36,7 +36,10 @@ window.onSignIn = (googleUser) => {
     chatClient.init(token);
 
     setTimeout(() => {
-        document.getElementById('signInButton').remove();
+        const signInButton = document.getElementById('signInButton');
+        if (signInButton) {
+            signInButton.remove();
+        }
         initApp(userInfo);
     }, 500);
 };

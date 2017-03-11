@@ -1,4 +1,4 @@
-// flow-typed signature: f3a5aac41e2240f39b88cafeaeb9070d
+// flow-typed signature: 189f17b26e6fc3a82d4666a3f802fb10
 // flow-typed version: <<STUB>>/react-flip-move_v^2.6.4/flow_v0.36.0
 
 /**
@@ -78,6 +78,10 @@ declare module 'react-flip-move/src/FlipMove' {
   declare module.exports: any;
 }
 
+declare module 'react-flip-move/src/helpers' {
+  declare module.exports: any;
+}
+
 declare module 'react-flip-move/src/index' {
   declare module.exports: any;
 }
@@ -132,6 +136,9 @@ declare module 'react-flip-move/src/error-messages.js' {
 }
 declare module 'react-flip-move/src/FlipMove.js' {
   declare module.exports: $Exports<'react-flip-move/src/FlipMove'>;
+}
+declare module 'react-flip-move/src/helpers.js' {
+  declare module.exports: $Exports<'react-flip-move/src/helpers'>;
 }
 declare module 'react-flip-move/src/index.js' {
   declare module.exports: $Exports<'react-flip-move/src/index'>;

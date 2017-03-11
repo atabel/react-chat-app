@@ -1,15 +1,20 @@
-// @flow weak
-export const addConversation = conversation => ({
+// @flow
+import type {State} from './reducer';
+import type {Conversation, Message} from './models';
+type Dispatch = (action: Object) => void;
+type GetState = () => State;
+
+export const addConversation = (conversation: Conversation) => ({
     type: 'ADD_CONVERSATION',
     payload: conversation,
 });
 
-export const disconnectUser = userId => ({
+export const disconnectUser = (userId: string) => ({
     type: 'DISCONNECT_USER',
     payload: userId,
 });
 
-export const addMessage = message => (dispatch, getState) => {
+export const addMessage = (message: Message) => (dispatch: Dispatch, getState: GetState) => {
     const {currentUser} = getState();
     const conversationId = message.sender === currentUser.id || message.receiver !== currentUser.id
         ? message.receiver
@@ -21,7 +26,7 @@ export const addMessage = message => (dispatch, getState) => {
     });
 };
 
-export const sendMessage = (messageText, conversationId) => (dispatch, getState, {chatClient}) => {
+export const sendMessage = (messageText: string, conversationId: string) => (dispatch: Dispatch, getState: GetState, {chatClient}: Object) => {
     const {currentUser} = getState();
     const {time} = chatClient.sendMessage(messageText, conversationId);
     const message = {

@@ -27,6 +27,11 @@ const buttonStyle = {
 const ChatBar = React.createClass({
     propTypes: {
         onSend: t.func.isRequired,
+        match: t.shape({
+            params: t.shape({
+                conversationId: t.string,
+            }).isRequired,
+        }).isRequired,
     },
 
     getInitialState() {
