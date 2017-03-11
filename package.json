@@ -2,7 +2,6 @@
   "name": "chat-client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://atabel.github.io/react-chat-app",
   "devDependencies": {
     "flow-bin": "^0.41.0",
     "gh-pages": "^0.12.0",
