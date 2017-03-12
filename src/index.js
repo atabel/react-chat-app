@@ -21,32 +21,3 @@ const initApp = () => {
 };
 
 initApp();
-
-// window.onSignIn = googleUser => {
-//     const profile = googleUser.getBasicProfile();
-//     const token = googleUser.getAuthResponse().id_token;
-//
-//     const userInfo = {
-//         id: profile.getId(),
-//         fullName: profile.getName(),
-//         avatar: profile.getImageUrl(),
-//         name: profile.getGivenName(),
-//         familyName: profile.getFamilyName(),
-//         email: profile.getEmail(),
-//     };
-//
-//     console.log({userInfo, token});
-//
-//     chatClient.init(token);
-//
-//     setTimeout(
-//         () => {
-//             const signInButton = document.getElementById('signInButton');
-//             if (signInButton) {
-//                 signInButton.remove();
-//             }
-//             initApp(userInfo);
-//         },
-//         500
-//     );
-// };
