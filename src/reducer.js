@@ -19,18 +19,22 @@ const messages = (state = {}, {type, payload}) => {
                 [messageId]: {...message, id: messageId},
             },
         };
+    } else if (type === 'SET_MESSAGES') {
+        return payload || state;
     }
 
     return state;
 };
 
 const conversations = (state = {}, {type, payload}) => {
-    if (type === 'ADD_CONVERSATION') {
+    if (type === 'ADD_CONVERSATION' || type === 'SET_CURRENT_USER') {
         return {...state, [payload.id]: {...payload, connected: true}};
     } else if (type === 'DISCONNECT_USER') {
         if (payload in state) {
             return {...state, [payload]: {...state[payload], connected: false}};
         }
+    } else if (type === 'SET_CONVERSATIONS') {
+        return payload || state;
     }
     return state;
 };

@@ -1,6 +1,7 @@
 // @flow
 import type {State} from './reducer';
-import type {Conversation, Message} from './models';
+import type {Conversation, Message, User} from './models';
+import {loadState, storeSession} from './storage';
 type Dispatch = (action: Object) => void;
 type GetState = () => State;
 
@@ -38,4 +39,24 @@ export const sendMessage = (messageText: string, conversationId: string) =>
             receiver: conversationId,
         };
         dispatch(addMessage(message));
+    };
+
+export const initSession = (userInfo: User, sessionToken: string) =>
+    (dispatch: Dispatch, getState: GetState, {chatClient}: Object) => {
+        storeSession(sessionToken, userInfo);
+        chatClient.init(sessionToken);
+        const {messages, conversations} = loadState(userInfo.id);
+
+        dispatch({
+            type: 'SET_CURRENT_USER',
+            payload: userInfo,
+        });
+        dispatch({
+            type: 'SET_MESSAGES',
+            payload: messages,
+        });
+        dispatch({
+            type: 'SET_CONVERSATIONS',
+            payload: conversations,
+        });
     };

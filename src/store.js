@@ -2,12 +2,12 @@
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
-import {loadState, storeState} from './storage';
+import chatClient from './chat-client';
+import {loadState, storeState, loadSession} from './storage';
 import reducer from './reducer';
 import type {State} from './reducer';
-import type {User} from './models';
 
-const getInitialState = ({conversations, messages} = {}, user) => {
+const getInitialState = ({conversations, messages} = {}, user = null) => {
     const state = {
         conversations: {
             ...conversations,
@@ -17,7 +17,7 @@ const getInitialState = ({conversations, messages} = {}, user) => {
                 id: 'all',
                 avatar: require('./assets/ic_group.svg'),
             },
-            [user.id]: user,
+            ...(user ? {[user.id]: user} : {}),
         },
         currentUser: user,
         messages,
@@ -26,8 +26,12 @@ const getInitialState = ({conversations, messages} = {}, user) => {
     return state;
 };
 
-const configStore = (user: User, chatClient: Object) => {
-    const persistedState = loadState(user.id);
+const configStore = () => {
+    const {user, sessionToken} = loadSession();
+    if (sessionToken) {
+        chatClient.init(sessionToken);
+    }
+    const persistedState = user ? loadState(user.id) : {};
 
     const store = createStore(
         reducer,
@@ -38,7 +42,9 @@ const configStore = (user: User, chatClient: Object) => {
     store.subscribe(
         debounce(() => {
             const {messages, conversations, currentUser}: State = store.getState();
-            storeState({messages, conversations}, currentUser.id);
+            if (currentUser) {
+                storeState({messages, conversations}, currentUser.id);
+            }
         }),
         1000
     );

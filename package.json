@@ -8,7 +8,8 @@
     "husky": "^0.13.2",
     "lint-staged": "^3.3.1",
     "prettier": "^0.22.0",
-    "react-scripts": "0.7.0"
+    "react-scripts": "0.7.0",
+    "sw-precache": "^5.0.0"
   },
   "dependencies": {
     "lodash": "^4.16.6",
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "npm run build && gh-pages -d build",
