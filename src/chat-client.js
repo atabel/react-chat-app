@@ -1,7 +1,7 @@
 // @flow
 import WebSocket from 'reconnecting-websocket';
 
-// type EventType = 'getUsers' | 'message' | 'user' | 'disconnect';
+type EventType = 'getUsers' | 'message' | 'user' | 'disconnect';
 
 type MessagePayload = {
     text: string,
@@ -101,38 +101,22 @@ const sendMessage = (messageText: string, receiver: string = 'all'): MessageChat
     return send({type: 'message', receiver, payload: {text: messageText}});
 };
 
-type Off = (event: 'message', l: Listener<MessageChatAction>) =>
-    | void
-    | ((event: 'getUsers', l: Listener<GetUsersChatAction>) =>
-        | void
-        | ((event: 'user', l: Listener<UserChatAction>) =>
-            | void
-            | ((event: 'disconnect', l: Listener<DisconnectChatAction>) => void)));
-
 /**
 * Dettached a previously registered listener
 * @param {string} event the event type
 * @param {Function} listenerToRemove
 */
-const off: Off = (event, listenerToRemove) => {
+const off = (event: EventType, listenerToRemove: Listener<ChatAction>) => {
     if (event in listeners) {
         listeners[event] = listeners[event].filter(l => l !== listenerToRemove);
     }
 };
 
-type On = (event: 'message', l: Listener<MessageChatAction>) =>
-    | Function
-    | ((event: 'getUsers', l: Listener<GetUsersChatAction>) =>
-        | Function
-        | ((event: 'user', l: Listener<UserChatAction>) =>
-            | Function
-            | ((event: 'disconnect', l: Listener<DisconnectChatAction>) => Function)));
-
 /**
  * Registers a listener for a given event type
  * @return {Function} dettach function to remove the event listener.
  */
-const on: On = (event, listener) => {
+const on = (event: EventType, listener: Listener<ChatAction>) => {
     if (event in listeners) {
         listeners[event].push(listener);
     } else {
