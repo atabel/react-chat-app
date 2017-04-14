@@ -1,12 +1,12 @@
+// @flow
 import {combineReducers} from 'redux';
+import type {Message, Conversation, User} from './models';
 
-const flatMap = (list, fn) =>
-    [].concat(...list.map(fn));
+const flatMap = (list, fn) => [].concat(...list.map(fn));
 
-const unique = (list) => [...new Set(list)];
+const unique = list => Array.from(new Set(list));
 
-const getMessageId = message =>
-    `${message.sender}_${message.time}`;
+const getMessageId = message => `${message.sender}_${message.time}`;
 
 const messages = (state = {}, {type, payload}) => {
     if (type === 'ADD_MESSAGE') {
@@ -19,64 +19,60 @@ const messages = (state = {}, {type, payload}) => {
                 [messageId]: {...message, id: messageId},
             },
         };
+    } else if (type === 'SET_MESSAGES') {
+        return payload || state;
     }
 
     return state;
 };
 
 const conversations = (state = {}, {type, payload}) => {
-    if (type === 'ADD_CONVERSATION') {
+    if (type === 'ADD_CONVERSATION' || type === 'SET_CURRENT_USER') {
         return {...state, [payload.id]: {...payload, connected: true}};
     } else if (type === 'DISCONNECT_USER') {
         if (payload in state) {
             return {...state, [payload]: {...state[payload], connected: false}};
         }
+    } else if (type === 'SET_CONVERSATIONS') {
+        return payload || state;
     }
     return state;
 };
 
-const currentConversation = (state = null, {type, payload}) => {
-    if (type === 'OPEN_CONVERSATION') {
-        return payload;
-    } else if (type === 'CLOSE_CONVERSATION') {
-        return null;
-    } else {
-        return state;
-    }
-};
-
-const currentUser = (state = null, {type, payload}) =>
-    (type === 'SET_CURRENT_USER') ? payload : state;
+const currentUser = (state = null, {type, payload}) => (type === 'SET_CURRENT_USER' ? payload : state);
 
 export default combineReducers({
     currentUser,
     messages,
     conversations,
-    currentConversation,
 });
 
-export const getCurrentUser = state => state.currentUser;
+export type State = {
+    currentUser: User,
+    messages: {
+        [conversationId: string]: {
+            [messageId: string]: Message,
+        },
+    },
+    conversations: {
+        [conversationId: string]: Conversation,
+    },
+};
 
-export const getUser = state => userId => state.conversations[userId];
-export const getConversation = getUser;
+export const getCurrentUser = (state: State): User => state.currentUser;
 
-export const getCurrentConversation = state => getConversation(state)(state.currentConversation);
+export const getUser = (state: State) => (userId: string): User => state.conversations[userId];
+export const getConversation = (state: State, conversationId: string): Conversation => getUser(state)(conversationId);
 
-const getConversationMessages = (state, conversationId) => {
+export const getConversationMessages = (state: State, conversationId: string): Array<Message> => {
     const messages = state.messages[conversationId] || {};
     return Object.keys(messages).map(cid => messages[cid]);
 };
 
-export const getCurrentConversationMessages = state => {
-    const currentConversation = getCurrentConversation(state);
-    return currentConversation
-        ? getConversationMessages(state, currentConversation.id)
-        : [];
-};
-
-export const getCurrentConversationUsers = state =>
-    unique(flatMap(getCurrentConversationMessages(state), ({sender, receiver}) => [sender, receiver]))
-        .map(getUser(state));
+export const getConversationUsers = (state: State, conversationId: string): Array<User> =>
+    unique(flatMap(getConversationMessages(state, conversationId), ({sender, receiver}) => [sender, receiver])).map(
+        getUser(state)
+    );
 
 const getLastMessage = (state, conversation) => {
     const messages = getConversationMessages(state, conversation);
@@ -87,7 +83,7 @@ const getLastMessage = (state, conversation) => {
     }
 };
 
-export const getConversations = state => {
+export const getConversations = (state: State): Array<Conversation> => {
     const me = getCurrentUser(state);
     return Object.keys(state.conversations)
         .filter(id => id !== me.id)
@@ -96,10 +92,12 @@ export const getConversations = state => {
             const lastMessage = getLastMessage(state, conversation.id);
             return {
                 ...conversation,
-                lastMessage: lastMessage ? {
-                    ...lastMessage,
-                    sender: getUser(state)(lastMessage.sender),
-                } : null,
+                lastMessage: lastMessage
+                    ? {
+                          ...lastMessage,
+                          sender: getUser(state)(lastMessage.sender),
+                      }
+                    : null,
             };
         });
 };

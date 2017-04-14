@@ -1,10 +1,13 @@
+// @flow
 import React from 'react';
 import Header from './header';
 
-const AppScreen = ({children, ...props}) => (
-    <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
+type Props = {children?: React$Element<*>};
+
+const AppScreen = ({children, ...props}: Props) => (
+    <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
         <Header {...props} />
-        <div style={{flex: 1, height: 'calc(100% - 56px)'}}>
+        <div style={{flex: 1, height: 'calc(100% - 56px)', overflow: 'auto'}}>
             {children}
         </div>
     </div>

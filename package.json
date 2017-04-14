@@ -2,8 +2,14 @@
   "name": "chat-client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://atabel.github.io/react-chat-app",
   "devDependencies": {
+    "flow-bin": "^0.41.0",
+    "gh-pages": "^0.12.0",
+    "husky": "^0.13.2",
+    "lint-staged": "^3.3.1",
+    "prettier": "^1.1.0",
+    "react-scripts": "0.7.0",
+    "sw-precache": "^5.0.0",
     "ava": "^0.17.0",
     "babel-preset-react-app": "^2.0.1",
     "babel-register": "^6.22.0",
@@ -21,16 +27,24 @@
     "react-dom": "^15.3.2",
     "react-flip-move": "^2.6.4",
     "react-redux": "^4.4.5",
+    "react-router-dom": "^4.0.0",
     "reconnecting-websocket": "^3.0.2",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "cross-env NODE_ENV=test ava",
     "eject": "react-scripts eject",
-    "deploy": "npm run build&&gh-pages -d build"
+    "deploy": "npm run build && gh-pages -d build",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "./node_modules/.bin/prettier --tab-width 4 --single-quote --trailing-comma es5 --bracket-spacing false -l --print-width 120 --write",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
