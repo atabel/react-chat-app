@@ -1,5 +1,5 @@
 // @flow
-import React, {PropTypes as t} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import chatClient from '../chat-client';
 import ChatsListScreen from './chats-list-screen';
@@ -8,18 +8,23 @@ import FlipMove from 'react-flip-move';
 import {addMessage, addConversation, disconnectUser} from '../actions';
 import {Route, Redirect} from 'react-router-dom';
 
+import type {Conversation, Message} from '../models';
+
 const isOpeningConversation = ({pathname}) => pathname.indexOf('conversation/') !== -1;
 
-const App = React.createClass({
-    propTypes: {
-        onReceiveMessage: t.func.isRequired,
-        onReceiveConversation: t.func.isRequired,
-        onUserDisconnects: t.func.isRequired,
-        location: t.object.isRequired,
-    },
+type Props = {
+    onReceiveMessage: (m: Message) => void,
+    onReceiveConversation: (c: Conversation) => void,
+    onUserDisconnects: (uid: string) => void,
+    location: Object,
+};
+
+class App extends React.Component {
+    props: Props;
 
     componentDidMount() {
         const {onReceiveConversation, onReceiveMessage, onUserDisconnects} = this.props;
+
         chatClient.on('message', ({sender, payload, time, receiver}) => {
             onReceiveMessage({sender, text: payload.text, media: payload.media, time, receiver});
         });
@@ -33,7 +38,7 @@ const App = React.createClass({
         });
 
         chatClient.getUsers();
-    },
+    }
 
     render() {
         const {location} = this.props;
@@ -77,8 +82,8 @@ const App = React.createClass({
                 />
             </FlipMove>
         );
-    },
-});
+    }
+}
 
 export default connect(null, {
     onReceiveConversation: addConversation,

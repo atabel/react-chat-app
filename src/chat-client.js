@@ -1,6 +1,54 @@
 // @flow
 import WebSocket from 'reconnecting-websocket';
 
+// type EventType = 'getUsers' | 'message' | 'user' | 'disconnect';
+
+type MessagePayload = {
+    text: string,
+    media?: Object,
+};
+
+type UserPayload = {
+    id: string,
+    fullName: string,
+    avatar: string,
+    name: string,
+    familyName: string,
+    email: string,
+};
+
+type DisconnectPayload = string;
+
+type MessageChatAction = {
+    type: 'message',
+    payload: MessagePayload,
+    time?: number,
+    receiver: string,
+    sender?: string,
+};
+type GetUsersChatAction = {
+    type: 'getUsers',
+    receiver: 'server',
+    time?: number,
+};
+type UserChatAction = {
+    type: 'user',
+    payload: UserPayload,
+    time?: number,
+    receiver: string,
+    sender?: string,
+};
+type DisconnectChatAction = {
+    type: 'disconnect',
+    payload: DisconnectPayload,
+    time?: number,
+    receiver: string,
+    sender?: string,
+};
+
+type ChatAction = MessageChatAction | GetUsersChatAction | UserChatAction | DisconnectChatAction;
+type Listener<A: ChatAction> = (action: A) => void;
+
 let ws;
 const listeners = {};
 
@@ -17,92 +65,83 @@ const PRODUCTION_CHAT_SERVER = 'wss://react-chat-server.herokuapp.com';
 const DEV_CHAT_SERVER = 'ws://localhost:8080';
 const chatServerUrl = dev ? DEV_CHAT_SERVER : PRODUCTION_CHAT_SERVER;
 
-const chatClient = {
-    /**
-     * Inits the chat connection with the server
-     * @param {string} token the google auth session token
-     */
-    init(token: string) {
-        ws = new WebSocket(`${chatServerUrl}/${token}`);
-        ws.addEventListener('message', handleMessage);
-    },
-
-    /**
-     * Fetch the users list from server.
-     * @return {Promise} resolves to an array of users:
-     * {
-     *     fullName: string,
-     *     avatar: string,
-     *     name: string,
-     *     familyName: string,
-     *     email: string,
-     *     id: string
-     * }
-     */
-    getUsers() {
-        return this.send({type: 'getUsers', receiver: 'server'});
-    },
-
-    /**
-     * Sends a chat message to a recipient
-     * @param {string} messageText
-     * @param {string} receiver userId of the receiver. When not provided,
-     * the message is sent to all the users
-     */
-    sendMessage(messageText: string, receiver: string = 'all') {
-        return this.send({type: 'message', receiver, payload: {text: messageText}});
-    },
-
-    /**
-     * Sends an action to the chat server
-     * @param {object} action an action has the following form:
-     * {
-     *     type: string, // for example 'message'
-     *     receiver: string, // the userId of the recipient or 'all'
-     *     [sender]: string, // not needed, the server knows you
-     *     [time]: number, // automatically set to current timestamp.
-     *     payload: object, // any data associated with the event
-     * }
-     * @return {[type]} [description]
-     */
-    send(action: Object) {
-        action.time = action.time || Date.now();
-        if (ws.readyState === CONNECTING) {
-            setTimeout(() => this.send(action), 100);
-        } else if (ws.readyState === OPEN) {
-            ws.send(JSON.stringify(action));
-        }
-        return action;
-    },
-
-    /**
-     * Registers a listener for a given event type
-     * @param {string} event
-     * @param {Function} listener will be called with every
-     * chat event of the specified type received from the sever
-     * @return {Function} dettach function to remove the event
-     * listener.
-     */
-    on(event: string, listener: Function) {
-        if (event in listeners) {
-            listeners[event].push(listener);
-        } else {
-            listeners[event] = [listener];
-        }
-        return () => this.off(event, listener);
-    },
-
-    /**
-     * Dettached a previously registered listener
-     * @param {string} event the event type
-     * @param {Function} listenerToRemove
-     */
-    off(event: string, listenerToRemove: Function) {
-        if (event in listeners) {
-            listeners[event] = listeners[event].filter(l => l !== listenerToRemove);
-        }
-    },
+/**
+ * Inits the chat connection with the server
+ * @param {string} token the google auth session token
+ */
+const init = (token: string) => {
+    ws = new WebSocket(`${chatServerUrl}/${token}`);
+    ws.addEventListener('message', handleMessage);
 };
+
+/**
+ * Sends an action to the chat server
+ */
+function send<A: ChatAction>(action: A): A {
+    action.time = action.time || Date.now();
+    if (ws.readyState === CONNECTING) {
+        setTimeout(() => send(action), 100);
+    } else if (ws.readyState === OPEN) {
+        ws.send(JSON.stringify(action));
+    }
+    return action;
+}
+
+/**
+ * Asks the server for the users list.
+ */
+const getUsers = (): GetUsersChatAction => {
+    return send({type: 'getUsers', receiver: 'server'});
+};
+
+/**
+ * Sends a chat message to a recipient (receiver)
+ */
+const sendMessage = (messageText: string, receiver: string = 'all'): MessageChatAction => {
+    return send({type: 'message', receiver, payload: {text: messageText}});
+};
+
+type Off = (event: 'message', l: Listener<MessageChatAction>) =>
+    | void
+    | ((event: 'getUsers', l: Listener<GetUsersChatAction>) =>
+        | void
+        | ((event: 'user', l: Listener<UserChatAction>) =>
+            | void
+            | ((event: 'disconnect', l: Listener<DisconnectChatAction>) => void)));
+
+/**
+* Dettached a previously registered listener
+* @param {string} event the event type
+* @param {Function} listenerToRemove
+*/
+const off: Off = (event, listenerToRemove) => {
+    if (event in listeners) {
+        listeners[event] = listeners[event].filter(l => l !== listenerToRemove);
+    }
+};
+
+type On = (event: 'message', l: Listener<MessageChatAction>) =>
+    | Function
+    | ((event: 'getUsers', l: Listener<GetUsersChatAction>) =>
+        | Function
+        | ((event: 'user', l: Listener<UserChatAction>) =>
+            | Function
+            | ((event: 'disconnect', l: Listener<DisconnectChatAction>) => Function)));
+
+/**
+ * Registers a listener for a given event type
+ * @return {Function} dettach function to remove the event listener.
+ */
+const on: On = (event, listener) => {
+    if (event in listeners) {
+        listeners[event].push(listener);
+    } else {
+        listeners[event] = [listener];
+    }
+    return () => off(event, listener);
+};
+
+const chatClient = {init, send, sendMessage, getUsers, on, off};
 
 window.chatClient = chatClient;
 
