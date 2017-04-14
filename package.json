@@ -31,7 +31,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
+    "src/**/*.js": [
       "prettier --tab-width 4 --single-quote --trailing-comma es5 --bracket-spacing false -l --print-width 120 --write",
       "git add"
     ]
