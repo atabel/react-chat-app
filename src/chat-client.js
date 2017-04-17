@@ -102,30 +102,34 @@ const sendMessage = (messageText: string, receiver: string = 'all'): MessageChat
 };
 
 /**
-* Dettached a previously registered listener
-* @param {string} event the event type
-* @param {Function} listenerToRemove
-*/
-const off = (event: EventType, listenerToRemove: Listener<ChatAction>) => {
+ * Dettached a previously registered listener
+ * @param {string} event the event type
+ * @param {Function} listenerToRemove
+ */
+function off<A: ChatAction>(event: EventType, listenerToRemove: Listener<A>) {
     if (event in listeners) {
         listeners[event] = listeners[event].filter(l => l !== listenerToRemove);
     }
-};
+}
 
 /**
  * Registers a listener for a given event type
  * @return {Function} dettach function to remove the event listener.
  */
-const on = (event: EventType, listener: Listener<ChatAction>) => {
+function on<A: ChatAction>(event: EventType, listener: Listener<A>): Function {
     if (event in listeners) {
         listeners[event].push(listener);
     } else {
         listeners[event] = [listener];
     }
     return () => off(event, listener);
-};
+}
 
-const chatClient = {init, send, sendMessage, getUsers, on, off};
+const onMessage = (listener: Listener<MessageChatAction>) => on('message', listener);
+const onUser = (listener: Listener<UserChatAction>) => on('user', listener);
+const onUserDisconnects = (listener: Listener<DisconnectChatAction>) => on('disconnect', listener);
+
+const chatClient = {init, send, sendMessage, getUsers, on, off, onMessage, onUser, onUserDisconnects};
 
 window.chatClient = chatClient;
 

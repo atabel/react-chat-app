@@ -25,15 +25,15 @@ class App extends React.Component {
     componentDidMount() {
         const {onReceiveConversation, onReceiveMessage, onUserDisconnects} = this.props;
 
-        chatClient.on('message', ({sender, payload, time, receiver}) => {
+        chatClient.onMessage(({sender, payload, time, receiver}) => {
             onReceiveMessage({sender, text: payload.text, media: payload.media, time, receiver});
         });
 
-        chatClient.on('user', ({payload}) => {
+        chatClient.onUser(({payload}) => {
             onReceiveConversation(payload);
         });
 
-        chatClient.on('disconnect', ({payload: userId}) => {
+        chatClient.onUserDisconnects(({payload: userId}) => {
             onUserDisconnects(userId);
         });
 
