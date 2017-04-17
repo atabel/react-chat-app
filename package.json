@@ -40,7 +40,7 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "./node_modules/.bin/prettier --tab-width 4 --single-quote --trailing-comma es5 --bracket-spacing false -l --print-width 120 --write",
+      "./node_modules/.bin/prettier --tab-width 4 --single-quote --trailing-comma es5 --bracket-spacing false --print-width 120 --write",
       "git add"
     ]
   },
