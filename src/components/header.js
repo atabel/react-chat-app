@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import IconButton from './icon-button';
 
@@ -15,29 +16,23 @@ const headerStyle = {
 const iconStyle = {padding: 16};
 const titleStyle = {flex: 1};
 
-const Header = ({title, icon, onClickIcon, actions = [], style}) => (
+type Props = {
+    title?: string,
+    icon?: string,
+    onClickIcon?: () => void,
+    actions?: Array<*>,
+    style?: Object,
+};
+
+const Header = ({title, icon, onClickIcon, actions = [], style}: Props) => (
     <header style={{...headerStyle, ...style}}>
-        {icon && (
-            <IconButton
-                icon={icon}
-                onPress={onClickIcon}
-                style={iconStyle}
-            />
-        )}
-        <h2
-            style={{...titleStyle, paddingLeft: icon ? 0 : 16}}
-        >
+        {icon && onClickIcon && <IconButton icon={icon} onPress={onClickIcon} style={iconStyle} />}
+        <h2 style={{...titleStyle, paddingLeft: icon ? 0 : 16}}>
             {title}
         </h2>
-        {actions.map(({title, icon, callback}) =>
-            <IconButton
-                key={title}
-                icon={icon}
-                onPress={callback}
-                label={title}
-                style={iconStyle}
-            />
-        )}
+        {actions.map(({title, icon, callback}) => (
+            <IconButton key={title} icon={icon} onPress={callback} label={title} style={iconStyle} />
+        ))}
     </header>
 );
 

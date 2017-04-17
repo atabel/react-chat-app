@@ -2,18 +2,22 @@
   "name": "chat-client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://atabel.github.io/react-chat-app",
   "devDependencies": {
     "ava": "^0.19.1",
     "babel-preset-react-app": "^2.2.0",
     "babel-register": "^6.22.0",
     "cross-env": "^4.0.0",
     "enzyme": "^2.8.2",
+    "flow-bin": "^0.44.0",
     "gh-pages": "^0.12.0",
+    "husky": "^0.13.2",
     "jsdom": "^9.12.0",
+    "lint-staged": "^3.3.1",
+    "prettier": "^1.1.0",
     "react-addons-test-utils": "^15.5.1",
     "react-scripts": "^0.9.5",
-    "sinon": "^2.1.0"
+    "sinon": "^2.1.0",
+    "sw-precache": "^5.0.0"
   },
   "dependencies": {
     "lodash": "^4.16.6",
@@ -21,16 +25,24 @@
     "react-dom": "^15.5.4",
     "react-flip-move": "^2.9.2",
     "react-redux": "^5.0.4",
+    "react-router-dom": "^4.0.0",
     "reconnecting-websocket": "^3.0.2",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "cross-env NODE_ENV=test ava",
     "eject": "react-scripts eject",
-    "deploy": "npm run build&&gh-pages -d build"
+    "deploy": "npm run build && gh-pages -d build",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "./node_modules/.bin/prettier --tab-width 4 --single-quote --trailing-comma es5 --bracket-spacing false -l --print-width 120 --write",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"

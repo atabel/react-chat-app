@@ -1,42 +1,23 @@
+// @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app';
-import chatClient from './chat-client';
 import configureStore from './store';
 import {Provider} from 'react-redux';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+import PrivateRoute from './components/private-route';
 
-const initApp = (userInfo) => {
-
-    const store = configureStore(userInfo, chatClient);
+const initApp = () => {
+    const store = configureStore();
 
     ReactDOM.render(
         <Provider store={store}>
-            <App />
+            <Router>
+                <Route render={({location}) => <PrivateRoute location={location} path="/" component={App} />} />
+            </Router>
         </Provider>,
         document.getElementById('root')
     );
 };
 
-window.onSignIn = (googleUser) => {
-    const profile = googleUser.getBasicProfile();
-    const token = googleUser.getAuthResponse().id_token;
-
-    const userInfo = {
-        id: profile.getId(),
-        fullName: profile.getName(),
-        avatar: profile.getImageUrl(),
-        name: profile.getGivenName(),
-        familyName: profile.getFamilyName(),
-        email: profile.getEmail(),
-    };
-
-    console.log({userInfo, token});
-
-    chatClient.init(token);
-
-    setTimeout(() => {
-        document.getElementById('signInButton').remove();
-        initApp(userInfo);
-    }, 500);
-};
-
+initApp();

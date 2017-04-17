@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../header';
-import IconButton from '../icon-button'
+import IconButton from '../icon-button';
 import {shallow, mount} from 'enzyme';
 import test from 'ava';
 import {spy} from 'sinon';
@@ -24,7 +24,6 @@ test('Header has an Icon', t => {
 
     t.true(wrapper.find(IconButton).length === 1);
 });
-
 
 test('handler is called when click on header icon', t => {
     const clickIconSpy = spy();

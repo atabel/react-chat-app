@@ -1,39 +1,36 @@
-import React, {PropTypes as t} from 'react';
+// @flow
+import React from 'react';
 import {connect} from 'react-redux';
 import chatClient from '../chat-client';
-import Conversation from './conversation';
 import ChatsListScreen from './chats-list-screen';
+import ConversationScreen from './conversation-screen';
 import FlipMove from 'react-flip-move';
-import AppScreen from './app-screen';
-import {getCurrentConversation} from '../reducer';
-import {
-    addMessage,
-    addConversation,
-    disconnectUser,
-    closeConversation
-} from '../actions';
+import {addMessage, addConversation, disconnectUser} from '../actions';
+import {Route, Redirect} from 'react-router-dom';
 
-const App = React.createClass({
+import type {Conversation, Message} from '../models';
 
-    propTypes: {
-        onReceiveMessage: t.func,
-        onReceiveConversation: t.func,
-        onCloseConversation: t.func,
-        onUserDisconnects: t.func,
-    },
+const isOpeningConversation = ({pathname}) => pathname.indexOf('conversation/') !== -1;
 
-    getInitialState() {
-        return {closingConversation: false};
-    },
+type Props = {
+    onReceiveMessage: (m: Message) => void,
+    onReceiveConversation: (c: Conversation) => void,
+    onUserDisconnects: (uid: string) => void,
+    location: Object,
+};
+
+class App extends React.Component {
+    props: Props;
 
     componentDidMount() {
         const {onReceiveConversation, onReceiveMessage, onUserDisconnects} = this.props;
+
         chatClient.on('message', ({sender, payload, time, receiver}) => {
             onReceiveMessage({sender, text: payload.text, media: payload.media, time, receiver});
         });
 
         chatClient.on('user', ({payload}) => {
-            onReceiveConversation(payload)
+            onReceiveConversation(payload);
         });
 
         chatClient.on('disconnect', ({payload: userId}) => {
@@ -41,83 +38,55 @@ const App = React.createClass({
         });
 
         chatClient.getUsers();
-    },
-
-    handleBackButtonPress() {
-        this.setState({closingConversation: true});
-    },
-
-    handleFinishAnimation() {
-        if (this.state.closingConversation) {
-            this.props.onCloseConversation();
-            this.setState({closingConversation: false});
-        }
-    },
-
-    renderConversation() {
-        return (
-            <AppScreen
-                title={this.props.currentConversation.fullName}
-                icon={require('../assets/ic_arrow_back.svg')}
-                onClickIcon={this.handleBackButtonPress}
-            >
-                <Conversation />
-            </AppScreen>
-        );
-    },
-
-    renderChatsList() {
-        return <ChatsListScreen />;
-    },
+    }
 
     render() {
-        const {currentConversation} = this.props;
-        const {closingConversation} = this.state;
-        const showConversation = currentConversation && !closingConversation;
+        const {location} = this.props;
         return (
             <FlipMove
+                style={{height: '100%'}}
                 duration={200}
                 enterAnimation={{
                     from: {
-                        transform: closingConversation ? '' : 'translateX(50%)',
+                        transform: location.pathname.indexOf('/conversations') !== -1 ? '' : 'translateX(50%)',
                         opacity: 0,
                     },
                     to: {
-                        transform: '', opacity: 1,
+                        transform: '',
+                        opacity: 1,
                     },
                 }}
                 leaveAnimation={{
+                    from: {
+                        transform: '',
+                        opacity: 1,
+                    },
                     to: {
-                        transform: closingConversation ? 'translateX(50%)' : '',
+                        transform: location.pathname.indexOf('/conversations') !== -1 ? 'translateX(50%)' : '',
                         opacity: 0,
                     },
                 }}
-                onFinishAll={this.handleFinishAnimation}
             >
-                {
-                    showConversation ? (
-                        <div key="conversation">
-                            {this.renderConversation()}
-                        </div>
-                    ) : (
-                        <div key="chats-list">
-                            {this.renderChatsList()}
-                        </div>
-                    )
-                }
+                <Redirect exact from="/" to="/conversations" />
+                <Route
+                    location={location}
+                    key={isOpeningConversation(location) ? location.key : 'list'}
+                    path="/conversations"
+                    component={ChatsListScreen}
+                />
+                <Route
+                    location={location}
+                    key={location.key + 'conv'}
+                    path="/conversation/:conversationId"
+                    component={ConversationScreen}
+                />
             </FlipMove>
         );
-    },
-});
-
-export default connect(
-    state => ({
-        currentConversation: getCurrentConversation(state)
-    }),
-    {
-        onReceiveConversation: addConversation,
-        onReceiveMessage: addMessage,
-        onCloseConversation: closeConversation,
-        onUserDisconnects: disconnectUser,
     }
-)(App);
+}
+
+export default connect(null, {
+    onReceiveConversation: addConversation,
+    onReceiveMessage: addMessage,
+    onUserDisconnects: disconnectUser,
+})(App);
