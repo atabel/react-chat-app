@@ -73,4 +73,4 @@ const ChatBar = React.createClass({
     },
 });
 
-export default connect(null, {onSend: sendMessage})(withRouter(ChatBar));
+export default withRouter(connect(null, {onSend: sendMessage})(ChatBar));

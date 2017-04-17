@@ -2,20 +2,38 @@
 import type {State} from './reducer';
 import type {Conversation, Message, User} from './models';
 import {loadState, storeSession} from './storage';
-type Dispatch = (action: Object) => void;
+
+type AddConversationAction = {type: 'ADD_CONVERSATION', payload: Conversation};
+type DisconnectUserAction = {type: 'DISCONNECT_USER', payload: string};
+type AddMessageAction = {type: 'ADD_MESSAGE', payload: Message};
+type SetCurrentUserAction = {type: 'SET_CURRENT_USER', payload: User};
+type SetMessagesAction = {type: 'SET_MESSAGES', payload: {[id: string]: Message}};
+type SetConversationsAction = {type: 'SET_CONVERSATIONS', payload: {[id: string]: Conversation}};
+
+type Action =
+    | AddConversationAction
+    | DisconnectUserAction
+    | AddMessageAction
+    | SetCurrentUserAction
+    | SetMessagesAction
+    | SetConversationsAction;
+
+// eslint-disable-next-line no-use-before-define
+type ThunkAction = (dispatch: Dispatch, getState: GetState, {chatClient: Object}) => any;
+type Dispatch = (action: Action | ThunkAction) => any;
 type GetState = () => State;
 
-export const addConversation = (conversation: Conversation) => ({
+export const addConversation = (conversation: Conversation): AddConversationAction => ({
     type: 'ADD_CONVERSATION',
     payload: conversation,
 });
 
-export const disconnectUser = (userId: string) => ({
+export const disconnectUser = (userId: string): DisconnectUserAction => ({
     type: 'DISCONNECT_USER',
     payload: userId,
 });
 
-export const addMessage = (message: Message) => (dispatch: Dispatch, getState: GetState) => {
+export const addMessage = (message: Message): ThunkAction => (dispatch, getState) => {
     const {currentUser} = getState();
     const conversationId = message.sender === currentUser.id || message.receiver !== currentUser.id
         ? message.receiver
@@ -27,10 +45,10 @@ export const addMessage = (message: Message) => (dispatch: Dispatch, getState: G
     });
 };
 
-export const sendMessage = (messageText: string, conversationId: string) => (
-    dispatch: Dispatch,
-    getState: GetState,
-    {chatClient}: Object
+export const sendMessage = (messageText: string, conversationId: string): ThunkAction => (
+    dispatch,
+    getState,
+    {chatClient}
 ) => {
     const {currentUser} = getState();
     const {time} = chatClient.sendMessage(messageText, conversationId);
@@ -43,10 +61,10 @@ export const sendMessage = (messageText: string, conversationId: string) => (
     dispatch(addMessage(message));
 };
 
-export const initSession = (userInfo: User, sessionToken: string) => (
-    dispatch: Dispatch,
-    getState: GetState,
-    {chatClient}: Object
+export const initSession = (userInfo: User, sessionToken: string): ThunkAction => (
+    dispatch,
+    getState,
+    {chatClient}
 ) => {
     storeSession(sessionToken, userInfo);
     chatClient.init(sessionToken);
