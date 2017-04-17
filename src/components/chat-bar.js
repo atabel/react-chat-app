@@ -1,5 +1,5 @@
 // @flow
-import React, {PropTypes as t} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import SendIcon from './send-icon';
@@ -24,23 +24,16 @@ const buttonStyle = {
     outline: 'none',
 };
 
-const ChatBar = React.createClass({
-    propTypes: {
-        onSend: t.func.isRequired,
-        match: t.shape({
-            params: t.shape({
-                conversationId: t.string,
-            }).isRequired,
-        }).isRequired,
-    },
+class ChatBar extends React.Component {
+    props: {
+        onSend: Function,
+        match: {params: {conversationId?: string}},
+    };
 
-    getInitialState() {
-        return {text: ''};
-    },
+    state = {text: ''};
+    input = null;
 
-    input: null,
-
-    handleSubmit(e) {
+    handleSubmit = e => {
         e.preventDefault();
         const messageText = this.state.text.trim();
         if (messageText.length > 0) {
@@ -51,7 +44,7 @@ const ChatBar = React.createClass({
                 this.input.focus();
             }
         }
-    },
+    };
 
     render() {
         const {text} = this.state;
@@ -70,7 +63,7 @@ const ChatBar = React.createClass({
                 </button>
             </form>
         );
-    },
-});
+    }
+}
 
 export default withRouter(connect(null, {onSend: sendMessage})(ChatBar));

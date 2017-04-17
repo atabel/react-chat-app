@@ -13,21 +13,15 @@ const inputStyle = {
     background: 'transparent',
 };
 
-const ChatsListScreen = React.createClass({
-    getInitialState() {
-        return {
-            isSearching: false,
-            searchText: '',
-        };
-    },
+class ChatsListScreen extends React.Component {
+    state = {
+        isSearching: false,
+        searchText: '',
+    };
 
-    handleFilterChange: () => {},
-
-    componentDidMount() {
-        this.handleFilterChange = debounce(text => {
-            this.setState({searchText: text});
-        }, 160);
-    },
+    handleFilterChange = debounce(text => {
+        this.setState({searchText: text});
+    }, 160);
 
     renderSearchInput() {
         const {searchText} = this.state;
@@ -41,7 +35,7 @@ const ChatsListScreen = React.createClass({
                 onChange={evt => this.handleFilterChange(evt.target.value)}
             />
         );
-    },
+    }
 
     render() {
         const {searchText} = this.state;
@@ -70,7 +64,7 @@ const ChatsListScreen = React.createClass({
                 )}
             </Route>
         );
-    },
-});
+    }
+}
 
 export default ChatsListScreen;

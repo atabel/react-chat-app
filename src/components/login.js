@@ -15,7 +15,7 @@ const loadGapi = new Promise((resolve, reject) => {
     check();
 });
 
-const Login = React.createClass({
+class Login extends React.Component {
     componentDidMount() {
         loadGapi.then(gapi => {
             gapi.signin2.render('login-button', {
@@ -27,9 +27,9 @@ const Login = React.createClass({
                 onsuccess: this.onSignIn,
             });
         });
-    },
+    }
 
-    onSignIn(googleUser) {
+    onSignIn = googleUser => {
         const profile = googleUser.getBasicProfile();
         const token = googleUser.getAuthResponse().id_token;
 
@@ -45,7 +45,7 @@ const Login = React.createClass({
         console.log({userInfo, token});
 
         setTimeout(() => this.props.onSignIn(userInfo, token), 1000);
-    },
+    };
 
     render() {
         return (
@@ -60,8 +60,8 @@ const Login = React.createClass({
                 <div id="login-button" />
             </div>
         );
-    },
-});
+    }
+}
 
 export default connect(
     state => ({

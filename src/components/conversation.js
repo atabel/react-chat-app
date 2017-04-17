@@ -1,5 +1,5 @@
 // @flow
-import React, {PropTypes as t} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import chatBackground from '../assets/background2.png';
 import FlipMove from 'react-flip-move';
@@ -32,26 +32,21 @@ const bubbleContainerStyle = {
     flexDirection: 'column',
 };
 
-const Conversation = React.createClass({
-    propTypes: {
-        messages: t.arrayOf(
-            t.shape({
-                text: t.string,
-                time: t.number.isRequired,
-                sender: t.string, //id
-                media: t.object,
-            })
-        ).isRequired,
-        currentUser: t.object.isRequired,
-        users: t.arrayOf(t.object).isRequired,
-    },
+class Conversation extends React.Component {
+    props: {
+        messages: Array<{
+            text?: string,
+            time: number,
+            sender?: string,
+            media?: Object,
+        }>,
+        currentUser: Object,
+        users: Array<Object>,
+    };
 
-    shouldScrollBottom: false,
-    list: null,
-
-    getInitialState() {
-        return {windowHeight: window.innerHeight};
-    },
+    state = {windowHeight: window.innerHeight};
+    shouldScrollBottom = false;
+    list = null;
 
     componentWillUpdate(nextProps) {
         let iHaveJustSentAMessage = false;
@@ -62,7 +57,7 @@ const Conversation = React.createClass({
             }
         }
         this.shouldScrollBottom = iHaveJustSentAMessage || getScrollToBottomDistance(this.list) === 0;
-    },
+    }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.shouldScrollBottom) {
@@ -71,28 +66,28 @@ const Conversation = React.createClass({
         if (this.list) {
             this.list.scrollTop += prevState.windowHeight - this.state.windowHeight;
         }
-    },
+    }
 
     componentDidMount() {
         this.scrollToBottom();
         window.addEventListener('resize', this.handleResize);
-    },
+    }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
-    },
+    }
 
-    handleResize() {
+    handleResize = () => {
         this.setState({windowHeight: window.innerHeight});
-    },
+    };
 
-    scrollToBottom() {
+    scrollToBottom = () => {
         if (this.list) {
             this.list.scrollTop = this.list.scrollHeight;
         }
-    },
+    };
 
-    getMessagePosition(node) {
+    getMessagePosition = node => {
         // As we are going to scroll to bottom before the animation start,
         // we need to apply the scroll-to-bottom distance correction
         const scrollCorrection = this.shouldScrollBottom
@@ -103,11 +98,11 @@ const Conversation = React.createClass({
             left,
             top: top - scrollCorrection,
         };
-    },
+    };
 
-    getUser(id) {
+    getUser = id => {
         return this.props.users.find(user => user.id === id);
-    },
+    };
 
     render() {
         const {messages} = this.props;
@@ -142,8 +137,8 @@ const Conversation = React.createClass({
                 <ChatBar />
             </div>
         );
-    },
-});
+    }
+}
 
 export default connect((state, props) => ({
     messages: getConversationMessages(state, props.conversationId),
