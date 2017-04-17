@@ -6,20 +6,20 @@ test('send message', t => {
     const messageText = 'ola k ase';
     const getState = () => ({
         currentUser: 'me',
-        currentConversation: 'convid',
     });
+    const conversationId = 'convid';
 
     const chatClientMock = {
         sendMessage(text, conversation) {
             t.is(text, messageText);
-            t.is(conversation, 'convid');
+            t.is(conversation, conversationId);
             return 1234;
         },
     };
 
     const dispatchSpy = spy();
 
-    sendMessage(messageText)(dispatchSpy, getState, {chatClient: chatClientMock});
+    sendMessage(messageText, conversationId)(dispatchSpy, getState, {chatClient: chatClientMock});
 
     t.true(dispatchSpy.called);
 });

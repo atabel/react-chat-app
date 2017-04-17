@@ -48,7 +48,7 @@
     "extends": "react-app"
   },
   "babel": {
-    "presets": "react-app"
+    "presets": ["react-app"]
   },
   "ava": {
     "babel": "inherit",

@@ -6,7 +6,6 @@ test('initial state', t => {
         currentUser: null,
         messages: {},
         conversations: {},
-        currentConversation: null,
     });
 });
 
@@ -25,7 +24,7 @@ test('Add message', t => {
         text: 'ola k ase',
         time: 12345,
         receiver: 'receiver id',
-        conversationId: 'receiver id'
+        conversationId: 'receiver id',
     };
     const expectedMessageId = 'sender user id_12345';
 
@@ -41,7 +40,7 @@ test('Add message', t => {
                 id: expectedMessageId,
             },
         },
-    })
+    });
 });
 
 test('Add conversation', t => {
@@ -60,5 +59,5 @@ test('Add conversation', t => {
             ...newConversation,
             connected: true,
         },
-    })
-})
+    });
+});

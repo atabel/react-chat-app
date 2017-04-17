@@ -20,7 +20,7 @@ test('Header renders a title', t => {
 });
 
 test('Header has an Icon', t => {
-    const wrapper = shallow(<Header title="section title" icon="icon/url.jpg" />);
+    const wrapper = shallow(<Header title="section title" icon="icon/url.jpg" onClickIcon={() => {}} />);
 
     t.true(wrapper.find(IconButton).length === 1);
 });
