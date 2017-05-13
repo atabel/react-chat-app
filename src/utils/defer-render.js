@@ -3,11 +3,10 @@ import React from 'react';
 
 type FunctionComponent<P> = (props: P) => ?React$Element<any>;
 type ClassComponent<D, P, S> = Class<React$Component<D, P, S>>;
-type DeferRender<P, S> = (
-    WrappedComponent: ClassComponent<void, P, S> | FunctionComponent<P>
-) => ClassComponent<void, P, S>;
 
-const deferRender: DeferRender<*, *> = WrappedComponent => {
+const deferRender = <P: Object, S>(
+    WrappedComponent: ClassComponent<void, P, S> | FunctionComponent<P>
+): ClassComponent<void, P, *> => {
     return class Wrapper extends React.PureComponent {
         state = {};
 
