@@ -8,7 +8,7 @@ type DeferRender<P, S> = (
 ) => ClassComponent<void, P, S>;
 
 const deferRender: DeferRender<*, *> = WrappedComponent => {
-    return class Wrapper extends React.Component {
+    return class Wrapper extends React.PureComponent {
         state = {};
 
         componentDidMount() {
