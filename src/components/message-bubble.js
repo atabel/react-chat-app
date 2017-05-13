@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import {emojify} from 'react-emojione';
 
 const userNameColors = [
     '#35cd96',
@@ -204,7 +205,7 @@ const MessageBubble = ({sender, text, media, time, me}: Props) => {
           </ImgWrapper>
         : <MessageWrapper sender={sender}>
               <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
-                  {text}
+                  {emojify(text)}
               </span>
               {media && <Media {...media} isOwnMessage={isOwnMessage} />}
               <span style={timeStyle}>

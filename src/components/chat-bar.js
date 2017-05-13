@@ -3,12 +3,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import SendIcon from './send-icon';
+import EmojiIcon from './emoji-icon';
+import KeyboardIcon from './keyboard-icon';
+import EmojiSelector from './emoji-selector';
 import {sendMessage} from '../actions';
 
 const barStyle = {
     height: 50,
     display: 'flex',
-    paddingLeft: 16,
 };
 
 const inputStyle = {
@@ -30,7 +32,7 @@ class ChatBar extends React.Component {
         match: {params: {conversationId?: string}},
     };
 
-    state = {text: ''};
+    state = {text: '', emojiSelectorOpen: false};
     input = null;
 
     handleSubmit = e => {
@@ -46,22 +48,74 @@ class ChatBar extends React.Component {
         }
     };
 
+    handleToggleEmojiKeyboard = () => {
+        this.setState(
+            ({emojiSelectorOpen}) => ({
+                emojiSelectorOpen: !emojiSelectorOpen,
+            }),
+            () => {
+                if (!this.state.emojiSelectorOpen) {
+                    if (this.input) {
+                        this.input.focus();
+                    }
+                }
+            }
+        );
+    };
+
+    handleEmojiSelected = emoji => {
+        const input = this.input;
+        if (input) {
+            let strPos = input.selectionStart;
+            const front = input.value.substring(0, strPos);
+            const back = input.value.substring(strPos, input.value.length);
+            this.setState({text: front + emoji + back});
+            strPos += emoji.length;
+            input.selectionStart = strPos;
+            input.selectionEnd = strPos;
+        }
+    };
+
+    handleDelete = () => {
+        const input = this.input;
+        if (input) {
+            let strPos = input.selectionStart;
+            const front = input.value.substring(0, strPos);
+            const back = input.value.substring(strPos, input.value.length);
+            this.setState({text: front.substring(0, strPos - 1) + back});
+            strPos -= 1;
+            input.selectionStart = strPos;
+            input.selectionEnd = strPos;
+        }
+    };
+
     render() {
-        const {text} = this.state;
+        const {text, emojiSelectorOpen} = this.state;
         return (
-            <form onSubmit={this.handleSubmit} style={barStyle}>
-                <input
-                    ref={node => this.input = node}
-                    style={inputStyle}
-                    type="text"
-                    placeholder="type a message"
-                    value={text}
-                    onChange={evt => this.setState({text: evt.target.value})}
-                />
-                <button style={buttonStyle}>
-                    <SendIcon color={text.trim().length > 0 ? '#2196F3' : '#ccc'} />
-                </button>
-            </form>
+            <div>
+                <form onSubmit={this.handleSubmit} style={barStyle}>
+                    <button style={buttonStyle} onClick={this.handleToggleEmojiKeyboard}>
+                        {emojiSelectorOpen ? <KeyboardIcon /> : <EmojiIcon />}
+                    </button>
+                    <input
+                        ref={node => this.input = node}
+                        style={inputStyle}
+                        type="text"
+                        placeholder="type a message"
+                        value={text}
+                        onChange={evt => this.setState({text: evt.target.value})}
+                    />
+                    <button style={buttonStyle}>
+                        <SendIcon color={text.trim().length > 0 ? '#2196F3' : '#CCC'} />
+                    </button>
+                </form>
+                {emojiSelectorOpen &&
+                    <EmojiSelector
+                        style={{height: 275}}
+                        onSelectEmoji={this.handleEmojiSelected}
+                        onDelete={this.handleDelete}
+                    />}
+            </div>
         );
     }
 }

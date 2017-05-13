@@ -20,9 +20,11 @@
     "sw-precache": "^5.0.0"
   },
   "dependencies": {
+    "emoji-shortnames": "^3.0.0",
     "lodash": "^4.16.6",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-emojione": "^3.1.7",
     "react-flip-move": "^2.9.2",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.0.0",
@@ -48,7 +50,9 @@
     "extends": "react-app"
   },
   "babel": {
-    "presets": ["react-app"]
+    "presets": [
+      "react-app"
+    ]
   },
   "ava": {
     "babel": "inherit",

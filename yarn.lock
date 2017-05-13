@@ -2127,6 +2127,10 @@ emoji-regex@^6.1.0:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-6.4.2.tgz#a30b6fee353d406d96cfb9fa765bdc82897eff6e"
 
+emoji-shortnames@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/emoji-shortnames/-/emoji-shortnames-3.0.0.tgz#e343af131063d5fd92ae23f83a45907f7427e4c7"
+
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
@@ -5651,6 +5655,10 @@ react-dom@^15.5.4:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "~15.5.7"
+
+react-emojione@^3.1.7:
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/react-emojione/-/react-emojione-3.1.7.tgz#a7ccb09404bd03db2b3cee2c476107f44b83a183"
 
 react-flip-move@^2.9.2:
   version "2.9.2"

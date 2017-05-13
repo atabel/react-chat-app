@@ -60,7 +60,7 @@ const handleMessage = m => {
     (listeners[action.type] || []).forEach(l => l(action));
 };
 
-const dev = process.env.NODE_ENV !== 'production';
+const dev = false && process.env.NODE_ENV !== 'production';
 const PRODUCTION_CHAT_SERVER = 'wss://react-chat-server.herokuapp.com';
 const DEV_CHAT_SERVER = 'ws://localhost:8080';
 const chatServerUrl = dev ? DEV_CHAT_SERVER : PRODUCTION_CHAT_SERVER;
