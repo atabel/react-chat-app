@@ -3,7 +3,7 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 import AppScreen from './app-screen';
 import ChatsList from './chats-list';
-import ArrowBackIcon from './arrow-back-icon';
+import ArrowBackIcon from './icons/arrow-back-icon';
 import debounce from 'lodash/debounce';
 
 const inputStyle = {

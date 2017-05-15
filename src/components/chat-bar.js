@@ -2,9 +2,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import SendIcon from './send-icon';
-import EmojiIcon from './emoji-icon';
-import KeyboardIcon from './keyboard-icon';
+import SendIcon from './icons/send-icon';
+import EmojiIcon from './icons/emoji-icon';
+import KeyboardIcon from './icons/keyboard-icon';
 import EmojiSelector from './emoji-selector';
 import {sendMessage} from '../actions';
 

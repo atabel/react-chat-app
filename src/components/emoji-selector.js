@@ -2,11 +2,11 @@
 import React from 'react';
 import emojis from 'emoji-shortnames';
 import {emojify} from 'react-emojione';
-import EmojiIcon from './emoji-icon';
-import BackSpaceIcon from './back-space-icon';
-import FlowerIcon from './flower-icon';
-import FoodIcon from './food-icon';
-import CarIcon from './car-icon';
+import EmojiIcon from './icons/emoji-icon';
+import BackSpaceIcon from './icons/back-space-icon';
+import FlowerIcon from './icons/flower-icon';
+import FoodIcon from './icons/food-icon';
+import CarIcon from './icons/car-icon';
 import emojiData from 'react-emojione/lib/data/emoji-data';
 import deferRender from '../utils/defer-render';
 
