@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
-import {emojify} from 'react-emojione';
+import Emojify from 'react-emojione';
+import Mark from 'react-mark-ii';
 
 const userNameColors = [
     '#35cd96',
@@ -180,6 +181,13 @@ const Media = ({url, title, description, image, embed, isOwnMessage}) => (
 
 const isImg = ({title, description, image, url} = {}) => url && !title && !description && !image;
 
+const markRenderers = {
+    _: ({children}) => <span style={{fontStyle: 'italic'}}>{children}</span>,
+    '*': ({children}) => <span style={{fontWeight: 'bold'}}>{children}</span>,
+    '~': ({children}) => <span style={{textDecoration: 'line-through'}}>{children}</span>,
+    '`': ({children}) => <span style={{fontFamily: 'monospace'}}>{children}</span>,
+};
+
 type Props = {
     sender: Object,
     text: string,
@@ -193,7 +201,6 @@ const MessageBubble = ({sender, text, media, time, me}: Props) => {
 
     const MessageWrapper = isOwnMessage ? OwnMessage : OtherMessage;
     const ImgWrapper = isOwnMessage ? OwnImage : OtherImage;
-
     return isImg(media)
         ? <ImgWrapper sender={sender}>
               <div style={{position: 'relative'}}>
@@ -205,7 +212,11 @@ const MessageBubble = ({sender, text, media, time, me}: Props) => {
           </ImgWrapper>
         : <MessageWrapper sender={sender}>
               <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
-                  {emojify(text)}
+                  <Emojify>
+                      <Mark wrap="span" renderers={markRenderers}>
+                          {text}
+                      </Mark>
+                  </Emojify>
               </span>
               {media && <Media {...media} isOwnMessage={isOwnMessage} />}
               <span style={timeStyle}>

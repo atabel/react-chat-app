@@ -5691,13 +5691,17 @@ react-dom@^15.5.4:
     object-assign "^4.1.0"
     prop-types "~15.5.7"
 
-react-emojione@^3.1.7:
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/react-emojione/-/react-emojione-3.1.7.tgz#a7ccb09404bd03db2b3cee2c476107f44b83a183"
+react-emojione@^3.1.10:
+  version "3.1.10"
+  resolved "https://registry.yarnpkg.com/react-emojione/-/react-emojione-3.1.10.tgz#2c233446c61f676381358b0573ea8d39b71e45b8"
 
 react-flip-move@^2.9.10:
   version "2.9.10"
   resolved "https://registry.yarnpkg.com/react-flip-move/-/react-flip-move-2.9.10.tgz#79abee30d8750aa28ba1a8d701dba2aed713bd97"
+
+react-mark-ii@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-mark-ii/-/react-mark-ii-1.2.2.tgz#f2657fb44b8cbc0a2ec96404e7ca710ecb549343"
 
 react-redux@^5.0.4:
   version "5.0.4"
