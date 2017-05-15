@@ -35,11 +35,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "flow check && yarn test",
     "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "cross-env NODE_ENV=test ava",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && gh-pages -d build",
-    "precommit": "lint-staged"
+    "deploy": "yarn build && gh-pages -d build",
+    "precommit": "lint-staged",
+    "flow": "flow"
   },
   "lint-staged": {
     "src/**/*.js": [
