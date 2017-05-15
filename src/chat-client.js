@@ -106,24 +106,24 @@ const sendMessage = (messageText: string, receiver: string = 'all'): MessageChat
  * @param {string} event the event type
  * @param {Function} listenerToRemove
  */
-function off<A: ChatAction>(event: EventType, listenerToRemove: Listener<A>) {
+const off = <A: ChatAction>(event: EventType, listenerToRemove: Listener<A>) => {
     if (event in listeners) {
         listeners[event] = listeners[event].filter(l => l !== listenerToRemove);
     }
-}
+};
 
 /**
  * Registers a listener for a given event type
  * @return {Function} dettach function to remove the event listener.
  */
-function on<A: ChatAction>(event: EventType, listener: Listener<A>): Function {
+const on = <A: ChatAction>(event: EventType, listener: Listener<A>): Function => {
     if (event in listeners) {
         listeners[event].push(listener);
     } else {
         listeners[event] = [listener];
     }
     return () => off(event, listener);
-}
+};
 
 const onMessage = (listener: Listener<MessageChatAction>) => on('message', listener);
 const onUser = (listener: Listener<UserChatAction>) => on('user', listener);
