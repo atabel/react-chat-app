@@ -49,21 +49,21 @@ class App extends React.Component {
                 enterAnimation={{
                     from: {
                         transform: location.pathname.indexOf('/conversations') !== -1 ? '' : 'translateX(50%)',
-                        opacity: 0,
+                        opacity: '0',
                     },
                     to: {
                         transform: '',
-                        opacity: 1,
+                        opacity: '1',
                     },
                 }}
                 leaveAnimation={{
                     from: {
                         transform: '',
-                        opacity: 1,
+                        opacity: '1',
                     },
                     to: {
                         transform: location.pathname.indexOf('/conversations') !== -1 ? 'translateX(50%)' : '',
-                        opacity: 0,
+                        opacity: '0',
                     },
                 }}
             >

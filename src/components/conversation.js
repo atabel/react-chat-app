@@ -7,7 +7,13 @@ import ChatBar from './chat-bar';
 import {getConversationMessages, getConversationUsers, getCurrentUser} from '../reducer';
 import MessageBubble from './message-bubble';
 
-const getScrollToBottomDistance = node => (node ? node.scrollHeight - (node.scrollTop + node.offsetHeight) : 0);
+const getScrollToBottomDistance = node => {
+    // this should not be needed, but flow thinks this node can be an Element instead of HTMLElement
+    if (node instanceof HTMLElement) {
+        return node.scrollHeight - (node.scrollTop + node.offsetHeight);
+    }
+    return 0;
+};
 
 const byTime = (message1, message2) => message1.time - message2.time;
 
@@ -90,13 +96,17 @@ class Conversation extends React.Component {
     getMessagePosition = node => {
         // As we are going to scroll to bottom before the animation start,
         // we need to apply the scroll-to-bottom distance correction
-        const scrollCorrection = this.shouldScrollBottom
+        const scrollCorrection = this.shouldScrollBottom && node.parentElement
             ? getScrollToBottomDistance(node.parentElement.parentElement)
             : 0;
-        const {left, top} = node.getBoundingClientRect();
+        const {left, top, right, bottom, height, width} = node.getBoundingClientRect();
         return {
             left,
+            right,
+            bottom: bottom - scrollCorrection,
             top: top - scrollCorrection,
+            height,
+            width,
         };
     };
 
@@ -110,7 +120,7 @@ class Conversation extends React.Component {
         return (
             <div style={conversationStyle}>
                 <div style={messagesListContainerStyle}>
-                    <div style={{overflow: 'auto'}} ref={node => this.list = node}>
+                    <div style={{overflow: 'auto'}} ref={node => (this.list = node)}>
                         <FlipMove
                             duration={200}
                             typeName="ul"
