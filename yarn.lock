@@ -5699,9 +5699,9 @@ react-flip-move@^2.9.10:
   version "2.9.10"
   resolved "https://registry.yarnpkg.com/react-flip-move/-/react-flip-move-2.9.10.tgz#79abee30d8750aa28ba1a8d701dba2aed713bd97"
 
-react-mark-ii@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-mark-ii/-/react-mark-ii-1.2.2.tgz#f2657fb44b8cbc0a2ec96404e7ca710ecb549343"
+react-mark-ii@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-mark-ii/-/react-mark-ii-1.2.4.tgz#a433cae6df70d44144ff5690df68b09e888e8cf5"
 
 react-redux@^5.0.4:
   version "5.0.4"
