@@ -13,6 +13,8 @@ const barStyle = {
     display: 'flex',
 };
 
+const formStyle = {flex: 1, display: 'flex'};
+
 const inputStyle = {
     border: 'none',
     outline: 'none',
@@ -93,22 +95,24 @@ class ChatBar extends React.Component {
         const {text, emojiSelectorOpen} = this.state;
         return (
             <div>
-                <form onSubmit={this.handleSubmit} style={barStyle}>
+                <div style={barStyle}>
                     <button style={buttonStyle} onClick={this.handleToggleEmojiKeyboard}>
                         {emojiSelectorOpen ? <KeyboardIcon /> : <EmojiIcon />}
                     </button>
-                    <input
-                        ref={node => this.input = node}
-                        style={inputStyle}
-                        type="text"
-                        placeholder="type a message"
-                        value={text}
-                        onChange={evt => this.setState({text: evt.target.value})}
-                    />
-                    <button style={buttonStyle}>
-                        <SendIcon color={text.trim().length > 0 ? '#2196F3' : '#CCC'} />
-                    </button>
-                </form>
+                    <form onSubmit={this.handleSubmit} style={formStyle}>
+                        <input
+                            ref={node => (this.input = node)}
+                            style={inputStyle}
+                            type="text"
+                            placeholder="type a message"
+                            value={text}
+                            onChange={evt => this.setState({text: evt.target.value})}
+                        />
+                        <button style={buttonStyle}>
+                            <SendIcon color={text.trim().length > 0 ? '#2196F3' : '#CCC'} />
+                        </button>
+                    </form>
+                </div>
                 {emojiSelectorOpen &&
                     <EmojiSelector
                         style={{height: 275}}
