@@ -4,12 +4,12 @@ import IconButton from '../icon-button';
 import {shallow, mount} from 'enzyme';
 import test from 'ava';
 import {spy} from 'sinon';
-import {jsdom} from 'jsdom';
+import {JSDOM} from 'jsdom';
 
 const setUpDocument = () => {
-    const doc = jsdom();
-    global.document = doc;
-    global.window = doc.defaultView;
+    const dom = new JSDOM();
+    global.window = dom.window;
+    global.document = dom.window.document;
 };
 setUpDocument();
 
