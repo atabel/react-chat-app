@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "ava": "^0.19.1",
-    "babel-preset-react-app": "^3.0.0",
-    "babel-register": "^6.24.1",
     "cross-env": "^5.0.0",
     "enzyme": "^2.8.2",
     "flow-bin": "^0.47.0",
@@ -17,7 +14,6 @@
     "react-addons-test-utils": "^15.5.1",
     "react-scripts": "^1.0.7",
     "react-test-renderer": "^15.5.4",
-    "sinon": "^2.3.2",
     "sw-precache": "^5.1.1"
   },
   "dependencies": {
@@ -38,7 +34,7 @@
     "start": "react-scripts start",
     "prebuild": "flow check && yarn test",
     "build": "react-scripts build",
-    "test": "cross-env NODE_ENV=test ava",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "yarn build && gh-pages -d build",
     "precommit": "lint-staged",
@@ -52,16 +48,5 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
-  "ava": {
-    "babel": "inherit",
-    "require": [
-      "babel-register"
-    ]
   }
 }

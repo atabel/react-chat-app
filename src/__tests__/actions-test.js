@@ -1,8 +1,6 @@
-import test from 'ava';
 import {sendMessage, addMessage} from '../actions';
-import {spy} from 'sinon';
 
-test('send message', t => {
+test('send message', () => {
     const messageText = 'ola k ase';
     const getState = () => ({
         currentUser: 'me',
@@ -11,25 +9,25 @@ test('send message', t => {
 
     const chatClientMock = {
         sendMessage(text, conversation) {
-            t.is(text, messageText);
-            t.is(conversation, conversationId);
+            expect(text).toBe(messageText);
+            expect(conversation).toBe(conversationId);
             return 1234;
         },
     };
 
-    const dispatchSpy = spy();
+    const dispatchSpy = jest.fn();
 
     sendMessage(messageText, conversationId)(dispatchSpy, getState, {chatClient: chatClientMock});
 
-    t.true(dispatchSpy.called);
+    expect(dispatchSpy).toBeCalled();
 });
 
-test('add message sent by me', t => {
+test('add message sent by me', () => {
     const getState = () => ({
         currentUser: {id: 'me'},
     });
 
-    const dispatchSpy = spy();
+    const dispatchSpy = jest.fn();
 
     addMessage({
         sender: 'me',
@@ -37,25 +35,23 @@ test('add message sent by me', t => {
         text: 'ola k ase',
     })(dispatchSpy, getState);
 
-    t.true(
-        dispatchSpy.calledWith({
-            type: 'ADD_MESSAGE',
-            payload: {
-                sender: 'me',
-                receiver: 'other',
-                text: 'ola k ase',
-                conversationId: 'other',
-            },
-        })
-    );
+    expect(dispatchSpy).toBeCalledWith({
+        type: 'ADD_MESSAGE',
+        payload: {
+            sender: 'me',
+            receiver: 'other',
+            text: 'ola k ase',
+            conversationId: 'other',
+        },
+    });
 });
 
-test('add message sent by other', t => {
+test('add message sent by other', () => {
     const getState = () => ({
         currentUser: {id: 'me'},
     });
 
-    const dispatchSpy = spy();
+    const dispatchSpy = jest.fn();
 
     addMessage({
         sender: 'other',
@@ -63,15 +59,13 @@ test('add message sent by other', t => {
         text: 'ola k ase',
     })(dispatchSpy, getState);
 
-    t.true(
-        dispatchSpy.calledWith({
-            type: 'ADD_MESSAGE',
-            payload: {
-                sender: 'other',
-                receiver: 'me',
-                text: 'ola k ase',
-                conversationId: 'other',
-            },
-        })
-    );
+    expect(dispatchSpy).toBeCalledWith({
+        type: 'ADD_MESSAGE',
+        payload: {
+            sender: 'other',
+            receiver: 'me',
+            text: 'ola k ase',
+            conversationId: 'other',
+        },
+    });
 });

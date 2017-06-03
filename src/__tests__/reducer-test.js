@@ -1,23 +1,22 @@
-import test from 'ava';
 import reducer, {getCurrentUser} from '../reducer';
 
-test('initial state', t => {
-    t.deepEqual(reducer({}, {}), {
+test('initial state', () => {
+    expect(reducer({}, {})).toEqual({
         currentUser: null,
         messages: {},
         conversations: {},
     });
 });
 
-test('set current user', t => {
+test('set current user', () => {
     const initialState = {currentUser: null};
     const newCurrentUser = 'any user id';
     const newState = reducer(initialState, {type: 'SET_CURRENT_USER', payload: newCurrentUser});
 
-    t.is(getCurrentUser(newState), newCurrentUser);
+    expect(getCurrentUser(newState)).toBe(newCurrentUser);
 });
 
-test('Add message', t => {
+test('Add message', () => {
     const initialState = {messages: {}};
     const newMessage = {
         sender: 'sender user id',
@@ -30,7 +29,7 @@ test('Add message', t => {
 
     const newState = reducer(initialState, {type: 'ADD_MESSAGE', payload: newMessage});
 
-    t.deepEqual(newState.messages, {
+    expect(newState.messages).toEqual({
         'receiver id': {
             [expectedMessageId]: {
                 sender: newMessage.sender,
@@ -43,7 +42,7 @@ test('Add message', t => {
     });
 });
 
-test('Add conversation', t => {
+test('Add conversation', () => {
     const initialState = {conversations: {}};
     const newConversation = {
         id: 'whateverid',
@@ -54,7 +53,7 @@ test('Add conversation', t => {
 
     const newState = reducer(initialState, {type: 'ADD_CONVERSATION', payload: newConversation});
 
-    t.deepEqual(newState.conversations, {
+    expect(newState.conversations).toEqual({
         [newConversation.id]: {
             ...newConversation,
             connected: true,
