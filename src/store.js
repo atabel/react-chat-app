@@ -45,8 +45,7 @@ const configStore = () => {
             if (currentUser) {
                 storeState({messages, conversations}, currentUser.id);
             }
-        }),
-        1000
+        }, 1000)
     );
 
     return store;
