@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "cross-env": "^5.0.0",
     "enzyme": "^2.8.2",
     "flow-bin": "^0.47.0",
     "gh-pages": "^0.12.0",
@@ -32,7 +31,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "flow check && yarn test",
+    "prebuild": "CI=true flow check && yarn test",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -42,7 +41,7 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "./node_modules/.bin/prettier --tab-width 4 --single-quote --trailing-comma es5 --bracket-spacing false --print-width 120 --write --parser flow",
+      "./node_modules/.bin/prettier --tab-width 4 --single-quote --trailing-comma es5 --no-bracket-spacing --print-width 120 --write --parser flow",
       "git add"
     ]
   },
