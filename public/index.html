@@ -20,22 +20,60 @@
     <link rel="icon" type="image/png" sizes="144x144" href="%PUBLIC_URL%/icons/ms-touch-icon-144x144-precomposed.png">
     <link rel="icon" type="image/png" sizes="192x192" href="%PUBLIC_URL%/icons/chrome-touch-icon-192x192.png">
     <link rel="apple-touch-icon" type="image/png" sizes="152x152" href="%PUBLIC_URL%/icons/apple-touch-icon.png">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <style>
-      html, body, #root {
-          height: 100%;
-      }
-      #root {
-          overflow: hidden;
-      }
-      body {
-        font-family: 'Roboto', sans-serif;
-      }
-      * {
-        box-sizing: border-box;
-      }
+        /* https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css */
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+        body {
+            line-height: 1;
+        }
+        ol, ul {
+            list-style: none;
+        }
+        blockquote, q {
+            quotes: none;
+        }
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content: '';
+            content: none;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+
+        html, body, #root { height: 100%; }
+        #root { overflow: hidden; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+        html { box-sizing: border-box; }
+        *, *:before, *:after { box-sizing: inherit; }
     </style>
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
@@ -63,12 +101,5 @@
       To begin the development, run `npm start`.
       To create a production bundle, use `npm run build`.
     -->
-    <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/service-worker.js');
-        });
-    }
-    </script>
   </body>
 </html>

@@ -6,6 +6,7 @@ import configureStore from './store';
 import {Provider} from 'react-redux';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import PrivateRoute from './components/private-route';
+import registerServiceWorker from './register-service-worker';
 
 const initApp = () => {
     const store = configureStore();
@@ -21,3 +22,4 @@ const initApp = () => {
 };
 
 initApp();
+registerServiceWorker();

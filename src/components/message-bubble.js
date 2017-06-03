@@ -171,7 +171,7 @@ const Media = ({url, title, description, image, embed, isOwnMessage}) => (
             fontSize: 13,
         }}
     >
-        <a href={url} style={{color: 'inherit', textDecoration: 'inherit'}} target="_blank">
+        <a href={url} style={{color: 'inherit', textDecoration: 'inherit'}} target="_blank" rel="noopener noreferrer">
             {title && <h3 style={{marginBottom: 8, fontWeight: 500}}>{title}</h3>}
             {description && <p style={{fontStyle: 'italic', marginBottom: 8}}>{description}</p>}
             {image && <img style={{width: '100%'}} src={image.url} alt={image.url} />}
