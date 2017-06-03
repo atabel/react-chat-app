@@ -4,11 +4,10 @@ import AppScreen from './app-screen';
 import Conversation from './conversation';
 import {getConversation} from '../reducer';
 
-const ConversationScreen = ({conversation, history}) => (
+const ConversationScreen = ({conversation, history}) =>
     <AppScreen title={conversation.fullName} icon={require('../assets/ic_arrow_back.svg')} onClickIcon={history.goBack}>
         <Conversation conversationId={conversation.id} />
-    </AppScreen>
-);
+    </AppScreen>;
 
 export default connect((state, {match: {params}}) => ({
     conversation: getConversation(state, params.conversationId),

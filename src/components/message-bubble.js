@@ -117,29 +117,32 @@ const formatTime = timestamp => {
     return `${hours}:${minutes}`;
 };
 
-const OwnMessage = ({children}) => (
+const OwnMessage = ({children}) =>
     <div style={messageContainerRightStyle}>
         <div style={ownTextMessageStyle}>
             <div>
                 {children}
             </div>
         </div>
-    </div>
-);
+    </div>;
 
-const OwnImage = ({children}) => (
+const OwnImage = ({children}) =>
     <div style={messageContainerRightStyle}>
         <div style={rightMessageStyle}>
             {children}
         </div>
-    </div>
-);
+    </div>;
 
-const Avatar = ({sender}) => (
-    <img style={avatarStyle} width={avatarSize} height={avatarSize} src={sender.avatar} alt={`${sender.name} avatar`} />
-);
+const Avatar = ({sender}) =>
+    <img
+        style={avatarStyle}
+        width={avatarSize}
+        height={avatarSize}
+        src={sender.avatar}
+        alt={`${sender.name} avatar`}
+    />;
 
-const OtherMessage = ({sender, children}) => (
+const OtherMessage = ({sender, children}) =>
     <div style={messageContainerLeftStyle}>
         <Avatar sender={sender} />
         <div style={otherTextMessageStyle}>
@@ -150,19 +153,17 @@ const OtherMessage = ({sender, children}) => (
                 {children}
             </div>
         </div>
-    </div>
-);
+    </div>;
 
-const OtherImage = ({sender, children}) => (
+const OtherImage = ({sender, children}) =>
     <div style={messageContainerLeftStyle}>
         <Avatar sender={sender} />
         <div style={leftMessageStyle}>
             {children}
         </div>
-    </div>
-);
+    </div>;
 
-const Media = ({url, title, description, image, embed, isOwnMessage}) => (
+const Media = ({url, title, description, image, embed, isOwnMessage}) =>
     <div
         style={{
             background: isOwnMessage ? '#72bcf8' : '#eee',
@@ -176,8 +177,7 @@ const Media = ({url, title, description, image, embed, isOwnMessage}) => (
             {description && <p style={{fontStyle: 'italic', marginBottom: 8}}>{description}</p>}
             {image && <img style={{width: '100%'}} src={image.url} alt={image.url} />}
         </a>
-    </div>
-);
+    </div>;
 
 const isImg = ({title, description, image, url} = {}) => url && !title && !description && !image;
 

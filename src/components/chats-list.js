@@ -82,9 +82,9 @@ const byTime = (conversationA, conversationB) => {
 const matchesSearch = searchFilter => conversation =>
     conversation.fullName.toLowerCase().startsWith(searchFilter.toLowerCase());
 
-const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) => (
+const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) =>
     <FlipMove typeName="ul" duration={160}>
-        {conversations.filter(matchesSearch(searchFilter)).sort(byTime).map(conversation => (
+        {conversations.filter(matchesSearch(searchFilter)).sort(byTime).map(conversation =>
             <li style={chatRowStyle} key={conversation.id}>
                 <Link to={`/conversation/${conversation.id}`} style={chatLinkStyle}>
                     <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
@@ -100,9 +100,8 @@ const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}
                     </div>
                 </Link>
             </li>
-        ))}
-    </FlipMove>
-);
+        )}
+    </FlipMove>;
 
 export default connect(state => ({
     conversations: getConversations(state),

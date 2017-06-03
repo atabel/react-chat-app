@@ -24,16 +24,15 @@ type Props = {
     style?: Object,
 };
 
-const Header = ({title, icon, onClickIcon, actions = [], style}: Props) => (
+const Header = ({title, icon, onClickIcon, actions = [], style}: Props) =>
     <header style={{...headerStyle, ...style}}>
         {icon && onClickIcon && <IconButton icon={icon} onPress={onClickIcon} style={iconStyle} />}
         <h2 style={{...titleStyle, paddingLeft: icon ? 0 : 16}}>
             {title}
         </h2>
-        {actions.map(({title, icon, callback}) => (
+        {actions.map(({title, icon, callback}) =>
             <IconButton key={title} icon={icon} onPress={callback} label={title} style={iconStyle} />
-        ))}
-    </header>
-);
+        )}
+    </header>;
 
 export default Header;

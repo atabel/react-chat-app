@@ -133,14 +133,14 @@ class Conversation extends React.Component {
                             {messages
                                 .sort(byTime)
                                 .map(message => ({...message, senderUser: this.getUser(message.sender)}))
-                                .map(({senderUser, text, time, media}) => (
+                                .map(({senderUser, text, time, media}) =>
                                     <li key={`${senderUser.id}-${time}`} style={bubbleContainerStyle}>
                                         <MessageBubble
                                             {...{sender: senderUser, text, time, media}}
                                             me={this.props.currentUser}
                                         />
                                     </li>
-                                ))}
+                                )}
                         </FlipMove>
                     </div>
                 </div>

@@ -54,15 +54,15 @@ const drawerStyle = {
 };
 const emojiStyle = {padding: '9px 7px'};
 
-const Drawer = deferRender(({emojis, onSelectEmoji}) => (
+const Drawer = deferRender(({emojis, onSelectEmoji}) =>
     <div style={drawerStyle}>
-        {emojis.map(shortName => (
+        {emojis.map(shortName =>
             <div key={shortName} style={emojiStyle} onClick={() => onSelectEmoji(shortName)}>
                 {emojify(shortName)}
             </div>
-        ))}
+        )}
     </div>
-));
+);
 
 class EmojiSelector extends React.Component {
     props: {
@@ -81,7 +81,7 @@ class EmojiSelector extends React.Component {
         return (
             <div style={{...selectorStyle, ...style}}>
                 <ul style={tabsGroupStyle}>
-                    {Object.keys(categories).map(category => (
+                    {Object.keys(categories).map(category =>
                         <li
                             key={category}
                             onClick={() => this.setState({selectedCategory: category})}
@@ -90,7 +90,7 @@ class EmojiSelector extends React.Component {
                         >
                             {renderCategoryIcon(category, category === selectedCategory)}
                         </li>
-                    ))}
+                    )}
                     <li key="delete" onClick={onDelete} style={tabStyle} title="delete">
                         <BackSpaceIcon />
                     </li>
