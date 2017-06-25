@@ -26,6 +26,11 @@ class App extends React.Component {
     props: Props;
 
     componentDidMount() {
+        const appContainer = document.getElementById('root');
+        if (appContainer) {
+            appContainer.style.background = 'black';
+        }
+
         const {onReceiveConversation, onReceiveMessage, onUserDisconnects} = this.props;
 
         chatClient.onMessage(({sender, payload, time, receiver}) => {
@@ -50,10 +55,15 @@ class App extends React.Component {
                 style={{height: '100%'}}
                 duration={200}
                 enterAnimation={{
-                    from: {
-                        transform: location.pathname.indexOf('/conversations') !== -1 ? '' : 'translateX(50%)',
-                        opacity: '0',
-                    },
+                    from: location.pathname.indexOf('/conversations') !== -1
+                        ? {
+                              transform: '',
+                              opacity: '0.5',
+                          }
+                        : {
+                              transform: 'translateX(50%)',
+                              opacity: '0',
+                          },
                     to: {
                         transform: '',
                         opacity: '1',
@@ -64,10 +74,15 @@ class App extends React.Component {
                         transform: '',
                         opacity: '1',
                     },
-                    to: {
-                        transform: location.pathname.indexOf('/conversations') !== -1 ? 'translateX(50%)' : '',
-                        opacity: '0',
-                    },
+                    to: location.pathname.indexOf('/conversations') !== -1
+                        ? {
+                              transform: 'translateX(50%)',
+                              opacity: '0',
+                          }
+                        : {
+                              transform: '',
+                              opacity: '0.5',
+                          },
                 }}
             >
                 <Redirect exact from="/" to="/conversations" />
