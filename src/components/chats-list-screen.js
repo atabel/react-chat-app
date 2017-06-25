@@ -4,6 +4,7 @@ import {Route} from 'react-router-dom';
 import AppScreen from './app-screen';
 import ChatsList from './chats-list';
 import ArrowBackIcon from './icons/arrow-back-icon';
+import SearchIcon from './icons/search-icon';
 import debounce from 'lodash/debounce';
 
 const inputStyle = {
@@ -44,7 +45,7 @@ class ChatsListScreen extends React.Component {
                 {({match: isSearching, history}) =>
                     <AppScreen
                         style={isSearching && {background: 'white', color: '#191919'}}
-                        icon={isSearching && <ArrowBackIcon style={{fill: 'currentColor'}} />}
+                        icon={isSearching && <ArrowBackIcon />}
                         onClickIcon={history.goBack}
                         title={isSearching ? this.renderSearchInput() : 'Chats'}
                         actions={
@@ -52,7 +53,7 @@ class ChatsListScreen extends React.Component {
                                 ? []
                                 : [
                                       {
-                                          icon: require('../assets/ic_search.svg'),
+                                          icon: <SearchIcon />,
                                           title: 'Search',
                                           callback: () => history.push('/conversations/search'),
                                       },

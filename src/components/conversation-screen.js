@@ -5,6 +5,7 @@ import AppScreen from './app-screen';
 import Conversation from './conversation';
 import {getConversation} from '../reducer';
 import type {Conversation as ConversationModel} from '../models';
+import ArrowBackIcon from './icons/arrow-back-icon';
 
 type Props = {
     conversation: ConversationModel,
@@ -12,7 +13,7 @@ type Props = {
 };
 
 const ConversationScreen = ({conversation, history}: Props) =>
-    <AppScreen title={conversation.fullName} icon={require('../assets/ic_arrow_back.svg')} onClickIcon={history.goBack}>
+    <AppScreen title={conversation.fullName} icon={<ArrowBackIcon />} onClickIcon={history.goBack}>
         <Conversation conversationId={conversation.id} />
     </AppScreen>;
 
