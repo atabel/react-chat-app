@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders an icon as child when a react element is passed 1`] = `
+<div
+  onClick={[Function]}
+  style={undefined}
+>
+  <svg>
+    whatever
+  </svg>
+</div>
+`;
+
+exports[`Renders an img when a url is passed 1`] = `
+<img
+  alt="some title"
+  onClick={[Function]}
+  src="some/url"
+  style={undefined}
+/>
+`;

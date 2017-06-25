@@ -16,7 +16,10 @@ type Props = {
     onReceiveMessage: (m: Message) => void,
     onReceiveConversation: (c: Conversation) => void,
     onUserDisconnects: (uid: string) => void,
-    location: Object,
+    location: {
+        key: string,
+        pathname: string,
+    },
 };
 
 class App extends React.Component {
