@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {Route} from 'react-router-dom';
 import AppScreen from './app-screen';
 import ChatsList from './chats-list';
@@ -14,7 +14,7 @@ const inputStyle = {
     background: 'transparent',
 };
 
-class ChatsListScreen extends React.Component {
+class ChatsListScreen extends React.Component<{}, {isSearching: boolean, searchText: string}> {
     state = {
         isSearching: false,
         searchText: '',

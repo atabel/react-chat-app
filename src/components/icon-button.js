@@ -1,8 +1,8 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
 type Props = {
-    icon: string | React$Element<*>,
+    icon: string | React.Element<any>,
     label?: string,
     onPress: () => void,
     style?: Object,

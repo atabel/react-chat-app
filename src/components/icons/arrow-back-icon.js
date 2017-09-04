@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
 const style = {transition: 'fill 0.3s ease'};
 

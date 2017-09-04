@@ -1,5 +1,5 @@
 [ignore]
-
+.*/node_modules/react-flip-move/.*
 [include]
 
 [libs]

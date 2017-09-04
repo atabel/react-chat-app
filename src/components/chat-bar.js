@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import SendIcon from './icons/send-icon';
@@ -28,12 +28,16 @@ const buttonStyle = {
     outline: 'none',
 };
 
-class ChatBar extends React.Component {
-    props: {
+class ChatBar extends React.Component<
+    {
         onSend: Function,
         match: {params: {conversationId?: string}},
-    };
-
+    },
+    {
+        text: string,
+        emojiSelectorOpen: boolean,
+    }
+> {
     state = {text: '', emojiSelectorOpen: false};
     input = null;
 

@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import chatBackground from '../assets/background2.png';
 import FlipMove from 'react-flip-move';
@@ -38,8 +38,8 @@ const bubbleContainerStyle = {
     flexDirection: 'column',
 };
 
-class Conversation extends React.Component {
-    props: {
+class Conversation extends React.Component<
+    {
         messages: Array<{
             text?: string,
             time: number,
@@ -48,8 +48,11 @@ class Conversation extends React.Component {
         }>,
         currentUser: Object,
         users: Array<Object>,
-    };
-
+    },
+    {
+        windowHeight: number,
+    }
+> {
     state = {windowHeight: window.innerHeight};
     shouldScrollBottom = false;
     list = null;
@@ -132,7 +135,10 @@ class Conversation extends React.Component {
                         >
                             {messages
                                 .sort(byTime)
-                                .map(message => ({...message, senderUser: this.getUser(message.sender)}))
+                                .map(message => ({
+                                    ...message,
+                                    senderUser: this.getUser(message.sender),
+                                }))
                                 .map(({senderUser, text, time, media}) =>
                                     <li key={`${senderUser.id}-${time}`} style={bubbleContainerStyle}>
                                         <MessageBubble

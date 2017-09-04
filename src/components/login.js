@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import {initSession} from '../actions';
 import {getCurrentUser} from '../reducer';
@@ -15,7 +15,7 @@ const loadGapi = new Promise((resolve, reject) => {
     check();
 });
 
-class Login extends React.Component {
+class Login extends React.Component<{onSignIn: (Object, string) => mixed}, {}> {
     componentDidMount() {
         loadGapi.then(gapi => {
             gapi.signin2.render('login-button', {

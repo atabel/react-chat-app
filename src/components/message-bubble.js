@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import Emojify from 'react-emojione';
 import Mark from 'react-mark-ii';
 

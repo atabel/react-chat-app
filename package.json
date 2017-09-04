@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "enzyme": "^2.9.1",
-    "flow-bin": "^0.48.0",
+    "flow-bin": "^0.54.0",
     "gh-pages": "^1.0.0",
     "husky": "^0.14.1",
     "jsdom": "^11.0.0",
@@ -21,12 +21,12 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-emojione": "^3.1.10",
-    "react-flip-move": "^2.9.14",
+    "react-flip-move": "^2.9.15",
     "react-mark-ii": "^1.2.4",
-    "react-redux": "^5.0.5",
-    "react-router-dom": "^4.0.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
     "reconnecting-websocket": "^3.0.5",
-    "redux": "^3.7.0",
+    "redux": "^3.7.2",
     "redux-thunk": "^2.1.0"
   },
   "scripts": {

@@ -1,13 +1,8 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
-type FunctionComponent<P> = (props: P) => ?React$Element<any>;
-type ClassComponent<D, P, S> = Class<React$Component<D, P, S>>;
-
-const deferRender = <P: Object, S>(
-    WrappedComponent: ClassComponent<void, P, S> | FunctionComponent<P>
-): ClassComponent<void, P, *> => {
-    return class Wrapper extends React.PureComponent {
+const deferRender = <P: {}>(WrappedComponent: React.ComponentType<P>): React.ComponentType<P> => {
+    return class Wrapper extends React.PureComponent<P, {props?: P}> {
         state = {};
 
         componentDidMount() {

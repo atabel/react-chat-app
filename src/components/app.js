@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import {connect} from 'react-redux';
 import chatClient from '../chat-client';
 import ChatsListScreen from './chats-list-screen';
@@ -22,9 +22,7 @@ type Props = {
     },
 };
 
-class App extends React.Component {
-    props: Props;
-
+class App extends React.Component<Props> {
     componentDidMount() {
         const appContainer = document.getElementById('root');
         if (appContainer) {

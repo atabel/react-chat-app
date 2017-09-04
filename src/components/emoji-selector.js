@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import emojis from 'emoji-shortnames';
 import {emojify} from 'react-emojione';
 import EmojiIcon from './icons/emoji-icon';
@@ -44,7 +44,13 @@ const renderCategoryIcon = (categoryName, isSelected) => {
 
 const selectorStyle = {display: 'flex', flexDirection: 'column', background: '#F8F8F8'};
 const tabsGroupStyle = {height: 50, display: 'flex', borderBottom: '1px solid #ddd'};
-const tabStyle = {flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '8px 0'};
+const tabStyle = {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '8px 0',
+};
 const drawerStyle = {
     flex: 1,
     display: 'flex',
@@ -54,7 +60,12 @@ const drawerStyle = {
 };
 const emojiStyle = {padding: '9px 7px'};
 
-const Drawer = deferRender(({emojis, onSelectEmoji}) =>
+type DrawerProps = {
+    emojis: string[],
+    onSelectEmoji: string => mixed,
+};
+
+const Drawer = deferRender(({emojis, onSelectEmoji}: DrawerProps) =>
     <div style={drawerStyle}>
         {emojis.map(shortName =>
             <div key={shortName} style={emojiStyle} onClick={() => onSelectEmoji(shortName)}>
@@ -64,13 +75,16 @@ const Drawer = deferRender(({emojis, onSelectEmoji}) =>
     </div>
 );
 
-class EmojiSelector extends React.Component {
-    props: {
+class EmojiSelector extends React.Component<
+    {
         onSelectEmoji: (emojiShortName: string) => void,
         onDelete: () => void,
         style: Object,
-    };
-
+    },
+    {
+        selectedCategory: $Keys<typeof categories>,
+    }
+> {
     state = {selectedCategory: 'people'};
 
     render() {
