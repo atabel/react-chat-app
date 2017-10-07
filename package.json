@@ -1,51 +1,56 @@
 {
-  "name": "chat-client",
-  "version": "0.1.0",
-  "private": true,
-  "devDependencies": {
-    "enzyme": "^2.9.1",
-    "flow-bin": "^0.56.0",
-    "gh-pages": "^1.0.0",
-    "husky": "^0.14.3",
-    "jsdom": "^11.3.0",
-    "lint-staged": "^4.2.3",
-    "prettier": "^1.7.4",
-    "react-addons-test-utils": "^15.6.2",
-    "react-scripts": "^1.0.14",
-    "react-test-renderer": "^15.6.1",
-    "sw-precache": "^5.2.0"
-  },
-  "dependencies": {
-    "emoji-shortnames": "^3.0.0",
-    "lodash": "^4.16.6",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-emojione": "^3.1.10",
-    "react-flip-move": "^2.9.15",
-    "react-mark-ii": "^1.2.4",
-    "react-redux": "^5.0.6",
-    "react-router-dom": "^4.2.2",
-    "reconnecting-websocket": "^3.0.5",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "prebuild": "CI=true flow check && yarn test",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy": "yarn build && gh-pages -d build",
-    "precommit": "lint-staged",
-    "flow": "flow"
-  },
-  "lint-staged": {
-    "src/**/*.js": [
-      "./node_modules/.bin/prettier --tab-width 4 --single-quote --trailing-comma es5 --no-bracket-spacing --print-width 120 --write --parser flow",
-      "git add"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  }
+    "name": "chat-client",
+    "version": "0.1.0",
+    "private": true,
+    "devDependencies": {
+        "enzyme": "^2.9.1",
+        "flow-bin": "^0.56.0",
+        "gh-pages": "^1.0.0",
+        "husky": "^0.14.3",
+        "jsdom": "^11.3.0",
+        "lint-staged": "^4.2.3",
+        "prettier": "^1.7.4",
+        "react-addons-test-utils": "^15.6.2",
+        "react-scripts": "^1.0.14",
+        "react-test-renderer": "^15.6.1",
+        "sw-precache": "^5.2.0"
+    },
+    "dependencies": {
+        "emoji-shortnames": "^3.0.0",
+        "lodash": "^4.16.6",
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1",
+        "react-emojione": "^3.1.10",
+        "react-flip-move": "^2.9.15",
+        "react-mark-ii": "^1.2.4",
+        "react-redux": "^5.0.6",
+        "react-router-dom": "^4.2.2",
+        "reconnecting-websocket": "^3.0.5",
+        "redux": "^3.7.2",
+        "redux-thunk": "^2.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "prebuild": "CI=true flow check && yarn test",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "deploy": "yarn build && gh-pages -d build",
+        "precommit": "lint-staged",
+        "flow": "flow"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "bracketSpacing": false,
+        "printWidth": 120,
+        "parser": "flow"
+    },
+    "lint-staged": {
+        "src/**/*.js": ["prettier --write", "git add"]
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    }
 }
