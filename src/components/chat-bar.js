@@ -117,12 +117,13 @@ class ChatBar extends React.Component<
                         </button>
                     </form>
                 </div>
-                {emojiSelectorOpen &&
+                {emojiSelectorOpen && (
                     <EmojiSelector
                         style={{height: 250}}
                         onSelectEmoji={this.handleEmojiSelected}
                         onDelete={this.handleDelete}
-                    />}
+                    />
+                )}
             </div>
         );
     }

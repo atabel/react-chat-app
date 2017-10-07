@@ -117,53 +117,42 @@ const formatTime = timestamp => {
     return `${hours}:${minutes}`;
 };
 
-const OwnMessage = ({children}) =>
+const OwnMessage = ({children}) => (
     <div style={messageContainerRightStyle}>
         <div style={ownTextMessageStyle}>
-            <div>
-                {children}
-            </div>
+            <div>{children}</div>
         </div>
-    </div>;
+    </div>
+);
 
-const OwnImage = ({children}) =>
+const OwnImage = ({children}) => (
     <div style={messageContainerRightStyle}>
-        <div style={rightMessageStyle}>
-            {children}
-        </div>
-    </div>;
+        <div style={rightMessageStyle}>{children}</div>
+    </div>
+);
 
-const Avatar = ({sender}) =>
-    <img
-        style={avatarStyle}
-        width={avatarSize}
-        height={avatarSize}
-        src={sender.avatar}
-        alt={`${sender.name} avatar`}
-    />;
+const Avatar = ({sender}) => (
+    <img style={avatarStyle} width={avatarSize} height={avatarSize} src={sender.avatar} alt={`${sender.name} avatar`} />
+);
 
-const OtherMessage = ({sender, children}) =>
+const OtherMessage = ({sender, children}) => (
     <div style={messageContainerLeftStyle}>
         <Avatar sender={sender} />
         <div style={otherTextMessageStyle}>
-            <div style={{fontWeight: 500, marginBottom: 4, color: getUserColor(sender)}}>
-                {sender.name}
-            </div>
-            <div>
-                {children}
-            </div>
+            <div style={{fontWeight: 500, marginBottom: 4, color: getUserColor(sender)}}>{sender.name}</div>
+            <div>{children}</div>
         </div>
-    </div>;
+    </div>
+);
 
-const OtherImage = ({sender, children}) =>
+const OtherImage = ({sender, children}) => (
     <div style={messageContainerLeftStyle}>
         <Avatar sender={sender} />
-        <div style={leftMessageStyle}>
-            {children}
-        </div>
-    </div>;
+        <div style={leftMessageStyle}>{children}</div>
+    </div>
+);
 
-const Media = ({url, title, description, image, embed, isOwnMessage}) =>
+const Media = ({url, title, description, image, embed, isOwnMessage}) => (
     <div
         style={{
             background: isOwnMessage ? '#72bcf8' : '#eee',
@@ -177,7 +166,8 @@ const Media = ({url, title, description, image, embed, isOwnMessage}) =>
             {description && <p style={{fontStyle: 'italic', marginBottom: 8}}>{description}</p>}
             {image && <img style={{width: '100%'}} src={image.url} alt={image.url} />}
         </a>
-    </div>;
+    </div>
+);
 
 const isImg = ({title, description, image, url} = {}) => url && !title && !description && !image;
 
@@ -201,28 +191,26 @@ const MessageBubble = ({sender, text, media, time, me}: Props) => {
 
     const MessageWrapper = isOwnMessage ? OwnMessage : OtherMessage;
     const ImgWrapper = isOwnMessage ? OwnImage : OtherImage;
-    return isImg(media)
-        ? <ImgWrapper sender={sender}>
-              <div style={{position: 'relative'}}>
-                  <img style={{width: '100%', borderRadius: 4, overflow: 'hidden'}} src={media.url} alt={media.url} />
-                  <span style={imgTimeStyle}>
-                      {formatTime(time)}
-                  </span>
-              </div>
-          </ImgWrapper>
-        : <MessageWrapper sender={sender}>
-              <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
-                  <Emojify>
-                      <Mark wrap="span" renderers={markRenderers}>
-                          {text}
-                      </Mark>
-                  </Emojify>
-              </span>
-              {media && <Media {...media} isOwnMessage={isOwnMessage} />}
-              <span style={timeStyle}>
-                  {formatTime(time)}
-              </span>
-          </MessageWrapper>;
+    return isImg(media) ? (
+        <ImgWrapper sender={sender}>
+            <div style={{position: 'relative'}}>
+                <img style={{width: '100%', borderRadius: 4, overflow: 'hidden'}} src={media.url} alt={media.url} />
+                <span style={imgTimeStyle}>{formatTime(time)}</span>
+            </div>
+        </ImgWrapper>
+    ) : (
+        <MessageWrapper sender={sender}>
+            <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
+                <Emojify>
+                    <Mark wrap="span" renderers={markRenderers}>
+                        {text}
+                    </Mark>
+                </Emojify>
+            </span>
+            {media && <Media {...media} isOwnMessage={isOwnMessage} />}
+            <span style={timeStyle}>{formatTime(time)}</span>
+        </MessageWrapper>
+    );
 };
 
 export default MessageBubble;

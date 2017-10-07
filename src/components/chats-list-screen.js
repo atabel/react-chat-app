@@ -42,7 +42,7 @@ class ChatsListScreen extends React.Component<{}, {isSearching: boolean, searchT
         const {searchText} = this.state;
         return (
             <Route path="/conversations/search">
-                {({match: isSearching, history}) =>
+                {({match: isSearching, history}) => (
                     <AppScreen
                         style={isSearching && {background: 'white', color: '#191919'}}
                         icon={isSearching && <ArrowBackIcon />}
@@ -61,7 +61,8 @@ class ChatsListScreen extends React.Component<{}, {isSearching: boolean, searchT
                         }
                     >
                         <ChatsList searchFilter={isSearching ? searchText : ''} />
-                    </AppScreen>}
+                    </AppScreen>
+                )}
             </Route>
         );
     }

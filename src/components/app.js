@@ -53,15 +53,16 @@ class App extends React.Component<Props> {
                 style={{height: '100%'}}
                 duration={200}
                 enterAnimation={{
-                    from: location.pathname.indexOf('/conversations') !== -1
-                        ? {
-                              transform: '',
-                              opacity: '0.5',
-                          }
-                        : {
-                              transform: 'translateX(50%)',
-                              opacity: '0',
-                          },
+                    from:
+                        location.pathname.indexOf('/conversations') !== -1
+                            ? {
+                                  transform: '',
+                                  opacity: '0.5',
+                              }
+                            : {
+                                  transform: 'translateX(50%)',
+                                  opacity: '0',
+                              },
                     to: {
                         transform: '',
                         opacity: '1',
@@ -72,15 +73,16 @@ class App extends React.Component<Props> {
                         transform: '',
                         opacity: '1',
                     },
-                    to: location.pathname.indexOf('/conversations') !== -1
-                        ? {
-                              transform: 'translateX(50%)',
-                              opacity: '0',
-                          }
-                        : {
-                              transform: '',
-                              opacity: '0.5',
-                          },
+                    to:
+                        location.pathname.indexOf('/conversations') !== -1
+                            ? {
+                                  transform: 'translateX(50%)',
+                                  opacity: '0',
+                              }
+                            : {
+                                  transform: '',
+                                  opacity: '0.5',
+                              },
                 }}
             >
                 <Redirect exact from="/" to="/conversations" />
