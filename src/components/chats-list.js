@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import {connect} from 'react-redux';
+import type {MapStateToProps} from 'react-redux';
 import FlipMove from 'react-flip-move';
 import {getConversations, getCurrentUser} from '../reducer';
 import {Link} from 'react-router-dom';
@@ -82,28 +83,32 @@ const byTime = (conversationA, conversationB) => {
 const matchesSearch = searchFilter => conversation =>
     conversation.fullName.toLowerCase().startsWith(searchFilter.toLowerCase());
 
-const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) =>
+const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) => (
     <FlipMove typeName="ul" duration={160}>
-        {conversations.filter(matchesSearch(searchFilter)).sort(byTime).map(conversation =>
-            <li style={chatRowStyle} key={conversation.id}>
-                <Link to={`/conversation/${conversation.id}`} style={chatLinkStyle}>
-                    <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
-                    <div style={rowContentStyle}>
-                        <div style={titleStyle}>
-                            {conversation.fullName}
+        {conversations
+            .filter(matchesSearch(searchFilter))
+            .sort(byTime)
+            .map(conversation => (
+                <li style={chatRowStyle} key={conversation.id}>
+                    <Link to={`/conversation/${conversation.id}`} style={chatLinkStyle}>
+                        <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
+                        <div style={rowContentStyle}>
+                            <div style={titleStyle}>{conversation.fullName}</div>
+                            <div style={previewStyle}>
+                                {conversation.connected === false && <span style={{color: '#2196F3'}}>(offline) </span>}
+                                {getConversationPreview(conversation, currentUser) ||
+                                    `${conversation.fullName} has joined!`}
+                            </div>
                         </div>
-                        <div style={previewStyle}>
-                            {conversation.connected === false && <span style={{color: '#2196F3'}}>(offline) </span>}
-                            {getConversationPreview(conversation, currentUser) ||
-                                `${conversation.fullName} has joined!`}
-                        </div>
-                    </div>
-                </Link>
-            </li>
-        )}
-    </FlipMove>;
+                    </Link>
+                </li>
+            ))}
+    </FlipMove>
+);
 
-export default connect(state => ({
+const mapStateToProps: MapStateToProps<*, *, *> = state => ({
     conversations: getConversations(state),
     currentUser: getCurrentUser(state),
-}))(ChatsList);
+});
+
+export default connect(mapStateToProps)(ChatsList);

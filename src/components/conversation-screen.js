@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import {connect} from 'react-redux';
+import type {MapStateToProps} from 'react-redux';
 import AppScreen from './app-screen';
 import Conversation from './conversation';
 import {getConversation} from '../reducer';
@@ -12,11 +13,14 @@ type Props = {
     history: {goBack: Function},
 };
 
-const ConversationScreen = ({conversation, history}: Props) =>
+const ConversationScreen = ({conversation, history}: Props) => (
     <AppScreen title={conversation.fullName} icon={<ArrowBackIcon />} onClickIcon={history.goBack}>
         <Conversation conversationId={conversation.id} />
-    </AppScreen>;
+    </AppScreen>
+);
 
-export default connect((state, {match: {params}}) => ({
+const mapStateToProps: MapStateToProps<*, *, *> = (state, {match: {params}}) => ({
     conversation: getConversation(state, params.conversationId),
-}))(ConversationScreen);
+});
+
+export default connect(mapStateToProps)(ConversationScreen);

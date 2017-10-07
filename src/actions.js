@@ -35,9 +35,8 @@ export const disconnectUser = (userId: string): DisconnectUserAction => ({
 
 export const addMessage = (message: Message): ThunkAction => (dispatch, getState) => {
     const {currentUser} = getState();
-    const conversationId = message.sender === currentUser.id || message.receiver !== currentUser.id
-        ? message.receiver
-        : message.sender;
+    const conversationId =
+        message.sender === currentUser.id || message.receiver !== currentUser.id ? message.receiver : message.sender;
 
     return dispatch({
         type: 'ADD_MESSAGE',

@@ -39,7 +39,7 @@ const conversations = (state = {}, {type, payload}) => {
     return state;
 };
 
-const currentUser = (state = null, {type, payload}) => (type === 'SET_CURRENT_USER' ? payload : state);
+const currentUser = (state = null, {type, payload}): User | null => (type === 'SET_CURRENT_USER' ? payload : state);
 
 export default combineReducers({
     currentUser,

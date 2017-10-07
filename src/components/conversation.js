@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import {connect} from 'react-redux';
+import type {MapStateToProps} from 'react-redux';
 import chatBackground from '../assets/background2.png';
 import FlipMove from 'react-flip-move';
 import ChatBar from './chat-bar';
@@ -99,9 +100,10 @@ class Conversation extends React.Component<
     getMessagePosition = node => {
         // As we are going to scroll to bottom before the animation start,
         // we need to apply the scroll-to-bottom distance correction
-        const scrollCorrection = this.shouldScrollBottom && node.parentElement
-            ? getScrollToBottomDistance(node.parentElement.parentElement)
-            : 0;
+        const scrollCorrection =
+            this.shouldScrollBottom && node.parentElement
+                ? getScrollToBottomDistance(node.parentElement.parentElement)
+                : 0;
         const {left, top, right, bottom, height, width} = node.getBoundingClientRect();
         return {
             left,
@@ -139,14 +141,14 @@ class Conversation extends React.Component<
                                     ...message,
                                     senderUser: this.getUser(message.sender),
                                 }))
-                                .map(({senderUser, text, time, media}) =>
+                                .map(({senderUser, text, time, media}) => (
                                     <li key={`${senderUser.id}-${time}`} style={bubbleContainerStyle}>
                                         <MessageBubble
                                             {...{sender: senderUser, text, time, media}}
                                             me={this.props.currentUser}
                                         />
                                     </li>
-                                )}
+                                ))}
                         </FlipMove>
                     </div>
                 </div>
@@ -156,8 +158,10 @@ class Conversation extends React.Component<
     }
 }
 
-export default connect((state, props) => ({
+const mapStateToProps: MapStateToProps<*, *, *> = (state, props) => ({
     messages: getConversationMessages(state, props.conversationId),
     users: getConversationUsers(state, props.conversationId),
     currentUser: getCurrentUser(state),
-}))(Conversation);
+});
+
+export default connect(mapStateToProps)(Conversation);
