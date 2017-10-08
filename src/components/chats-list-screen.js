@@ -14,7 +14,9 @@ const inputStyle = {
     background: 'transparent',
 };
 
-class ChatsListScreen extends React.Component<{}, {isSearching: boolean, searchText: string}> {
+type State = {isSearching: boolean, searchText: string};
+
+class ChatsListScreen extends React.Component<{}, State> {
     state = {
         isSearching: false,
         searchText: '',

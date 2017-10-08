@@ -28,16 +28,17 @@ const buttonStyle = {
     outline: 'none',
 };
 
-class ChatBar extends React.Component<
-    {
-        onSend: Function,
-        match: {params: {conversationId?: string}},
-    },
-    {
-        text: string,
-        emojiSelectorOpen: boolean,
-    }
-> {
+type Props = {
+    onSend: (messageText: string, conversationId: string) => mixed,
+    match: {params: {conversationId: string}},
+};
+
+type State = {
+    text: string,
+    emojiSelectorOpen: boolean,
+};
+
+class ChatBar extends React.Component<Props, State> {
     state = {text: '', emojiSelectorOpen: false};
     input = null;
 

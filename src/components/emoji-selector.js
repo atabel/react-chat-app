@@ -75,16 +75,17 @@ const Drawer = deferRender(({emojis, onSelectEmoji}: DrawerProps) => (
     </div>
 ));
 
-class EmojiSelector extends React.Component<
-    {
-        onSelectEmoji: (emojiShortName: string) => void,
-        onDelete: () => void,
-        style: Object,
-    },
-    {
-        selectedCategory: $Keys<typeof categories>,
-    }
-> {
+type Props = {
+    onSelectEmoji: (emojiShortName: string) => void,
+    onDelete: () => void,
+    style: Object,
+};
+
+type State = {
+    selectedCategory: $Keys<typeof categories>,
+};
+
+class EmojiSelector extends React.Component<Props, State> {
     state = {selectedCategory: 'people'};
 
     render() {

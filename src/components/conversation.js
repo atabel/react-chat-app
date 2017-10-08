@@ -39,21 +39,22 @@ const bubbleContainerStyle = {
     flexDirection: 'column',
 };
 
-class Conversation extends React.Component<
-    {
-        messages: Array<{
-            text?: string,
-            time: number,
-            sender?: string,
-            media?: Object,
-        }>,
-        currentUser: Object,
-        users: Array<Object>,
-    },
-    {
-        windowHeight: number,
-    }
-> {
+type Props = {
+    messages: Array<{
+        text?: string,
+        time: number,
+        sender?: string,
+        media?: Object,
+    }>,
+    currentUser: Object,
+    users: Array<Object>,
+};
+
+type State = {
+    windowHeight: number,
+};
+
+class Conversation extends React.Component<Props, State> {
     state = {windowHeight: window.innerHeight};
     shouldScrollBottom = false;
     list = null;

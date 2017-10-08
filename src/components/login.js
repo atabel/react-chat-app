@@ -15,7 +15,11 @@ const loadGapi = new Promise((resolve, reject) => {
     check();
 });
 
-class Login extends React.Component<{onSignIn: (Object, string) => mixed}, {}> {
+type Props = {
+    onSignIn: (userInfo: Object, token: string) => mixed,
+};
+
+class Login extends React.Component<Props, {}> {
     componentDidMount() {
         loadGapi.then(gapi => {
             gapi.signin2.render('login-button', {
