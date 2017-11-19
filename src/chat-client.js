@@ -26,6 +26,13 @@ type MessageChatAction = {
     receiver: string,
     sender?: string,
 };
+type ReceivedMessageChatAction = {
+    type: 'message',
+    payload: MessagePayload,
+    time: number,
+    receiver: string,
+    sender: string,
+};
 type GetUsersChatAction = {
     type: 'getUsers',
     receiver: 'server',
@@ -46,7 +53,12 @@ type DisconnectChatAction = {
     sender?: string,
 };
 
-type ChatAction = MessageChatAction | GetUsersChatAction | UserChatAction | DisconnectChatAction;
+type ChatAction =
+    | MessageChatAction
+    | GetUsersChatAction
+    | UserChatAction
+    | DisconnectChatAction
+    | ReceivedMessageChatAction;
 type Listener<A: ChatAction> = (action: A) => void;
 
 let ws;
@@ -125,7 +137,7 @@ const on = <A: ChatAction>(event: EventType, listener: Listener<A>): Function =>
     return () => off(event, listener);
 };
 
-const onMessage = (listener: Listener<MessageChatAction>) => on('message', listener);
+const onMessage = (listener: Listener<ReceivedMessageChatAction>) => on('message', listener);
 const onUser = (listener: Listener<UserChatAction>) => on('user', listener);
 const onUserDisconnects = (listener: Listener<DisconnectChatAction>) => on('disconnect', listener);
 

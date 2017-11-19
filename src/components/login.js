@@ -1,8 +1,9 @@
 // @flow
 import * as React from 'react';
 import {connect} from 'react-redux';
+import type {MapDispatchToProps} from 'react-redux';
 import {initSession} from '../actions';
-import {getCurrentUser} from '../reducer';
+import type {Action} from '../actions';
 
 const loadGapi = new Promise((resolve, reject) => {
     const check = () => {
@@ -16,7 +17,7 @@ const loadGapi = new Promise((resolve, reject) => {
 });
 
 type Props = {
-    onSignIn: (userInfo: Object, token: string) => mixed,
+    onSignIn: *,
 };
 
 class Login extends React.Component<Props, {}> {
@@ -67,9 +68,8 @@ class Login extends React.Component<Props, {}> {
     }
 }
 
-export default connect(
-    state => ({
-        isLoggedIn: !!getCurrentUser(state),
-    }),
-    {onSignIn: initSession}
-)(Login);
+const mapDispatchToProps: MapDispatchToProps<Action, {}, Props> = dispatch => ({
+    onSignIn: (userInfo, token) => dispatch(initSession(userInfo, token)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

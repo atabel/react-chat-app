@@ -1,5 +1,6 @@
 // @flow
 import type {State} from './reducer';
+import {getCurrentUser} from './reducer';
 import type {Conversation, Message, User} from './models';
 import {loadState, storeSession} from './storage';
 
@@ -10,7 +11,7 @@ type SetCurrentUserAction = {type: 'SET_CURRENT_USER', payload: User};
 type SetMessagesAction = {type: 'SET_MESSAGES', payload: {[id: string]: Message}};
 type SetConversationsAction = {type: 'SET_CONVERSATIONS', payload: {[id: string]: Conversation}};
 
-type Action =
+export type Action =
     | AddConversationAction
     | DisconnectUserAction
     | AddMessageAction
@@ -34,7 +35,7 @@ export const disconnectUser = (userId: string): DisconnectUserAction => ({
 });
 
 export const addMessage = (message: Message): ThunkAction => (dispatch, getState) => {
-    const {currentUser} = getState();
+    const currentUser = getCurrentUser(getState());
     const conversationId =
         message.sender === currentUser.id || message.receiver !== currentUser.id ? message.receiver : message.sender;
 
@@ -49,7 +50,7 @@ export const sendMessage = (messageText: string, conversationId: string): ThunkA
     getState,
     {chatClient}
 ) => {
-    const {currentUser} = getState();
+    const currentUser = getCurrentUser(getState());
     const {time} = chatClient.sendMessage(messageText, conversationId);
     const message = {
         sender: currentUser.id,

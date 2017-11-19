@@ -48,7 +48,7 @@ export default combineReducers({
 });
 
 export type State = {
-    currentUser: User,
+    currentUser: ?User,
     messages: {
         [conversationId: string]: {
             [messageId: string]: Message,
@@ -59,9 +59,9 @@ export type State = {
     },
 };
 
-export const getCurrentUser = (state: State): User => state.currentUser;
+export const getCurrentUser = (state: State) => state.currentUser || {id: ''};
 
-export const getUser = (state: State) => (userId: string): User => state.conversations[userId];
+export const getUser = (state: State) => (userId: string) => state.conversations[userId];
 export const getConversation = (state: State, conversationId: string): Conversation => getUser(state)(conversationId);
 
 export const getConversationMessages = (state: State, conversationId: string): Array<Message> => {
@@ -83,21 +83,26 @@ const getLastMessage = (state, conversation) => {
     }
 };
 
-export const getConversations = (state: State): Array<Conversation> => {
+export const getConversations = (state: State) => {
     const me = getCurrentUser(state);
     return Object.keys(state.conversations)
         .filter(id => id !== me.id)
         .map(id => state.conversations[id])
         .map(conversation => {
             const lastMessage = getLastMessage(state, conversation.id);
+            if (lastMessage === null) {
+                return {
+                    ...conversation,
+                    lastMessage: null,
+                };
+            }
+            const {sender, ...rest} = lastMessage;
             return {
                 ...conversation,
-                lastMessage: lastMessage
-                    ? {
-                          ...lastMessage,
-                          sender: getUser(state)(lastMessage.sender),
-                      }
-                    : null,
+                lastMessage: {
+                    ...rest,
+                    sender: getUser(state)(lastMessage.sender),
+                },
             };
         });
 };

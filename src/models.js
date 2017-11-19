@@ -1,3 +1,4 @@
+//@flow
 export type Conversation = {
     id: string,
     fullName: string,

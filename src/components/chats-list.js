@@ -5,6 +5,7 @@ import type {MapStateToProps} from 'react-redux';
 import FlipMove from 'react-flip-move';
 import {getConversations, getCurrentUser} from '../reducer';
 import {Link} from 'react-router-dom';
+import type {State} from '../reducer';
 
 const chatRowStyle = {
     height: 64,
@@ -83,30 +84,47 @@ const byTime = (conversationA, conversationB) => {
 const matchesSearch = searchFilter => conversation =>
     conversation.fullName.toLowerCase().startsWith(searchFilter.toLowerCase());
 
-const ChatsList = ({conversations, onSelectChat, currentUser, searchFilter = ''}) => (
-    <FlipMove typeName="ul" duration={160}>
-        {conversations
-            .filter(matchesSearch(searchFilter))
-            .sort(byTime)
-            .map(conversation => (
-                <li style={chatRowStyle} key={conversation.id}>
-                    <Link to={`/conversation/${conversation.id}`} style={chatLinkStyle}>
-                        <img style={avatarStyle} src={conversation.avatar} alt={`${conversation.name} avatar`} />
-                        <div style={rowContentStyle}>
-                            <div style={titleStyle}>{conversation.fullName}</div>
-                            <div style={previewStyle}>
-                                {conversation.connected === false && <span style={{color: '#2196F3'}}>(offline) </span>}
-                                {getConversationPreview(conversation, currentUser) ||
-                                    `${conversation.fullName} has joined!`}
-                            </div>
-                        </div>
-                    </Link>
-                </li>
-            ))}
-    </FlipMove>
-);
+type Props = {
+    conversations: *,
+    currentUser: *,
+    searchFilter?: string,
+};
 
-const mapStateToProps: MapStateToProps<*, *, *> = state => ({
+class ChatsList extends React.Component<Props> {
+    render() {
+        const {conversations, currentUser, searchFilter = ''} = this.props;
+        return (
+            <FlipMove typeName="ul" duration={160}>
+                {[...conversations]
+                    .filter(matchesSearch(searchFilter))
+                    .sort(byTime)
+                    .map(conversation => (
+                        <li style={chatRowStyle} key={conversation.id}>
+                            <Link to={`/conversation/${conversation.id}`} style={chatLinkStyle}>
+                                <img
+                                    style={avatarStyle}
+                                    src={conversation.avatar}
+                                    alt={`${conversation.name} avatar`}
+                                />
+                                <div style={rowContentStyle}>
+                                    <div style={titleStyle}>{conversation.fullName}</div>
+                                    <div style={previewStyle}>
+                                        {conversation.connected === false && (
+                                            <span style={{color: '#2196F3'}}>(offline) </span>
+                                        )}
+                                        {getConversationPreview(conversation, currentUser) ||
+                                            `${conversation.fullName} has joined!`}
+                                    </div>
+                                </div>
+                            </Link>
+                        </li>
+                    ))}
+            </FlipMove>
+        );
+    }
+}
+
+const mapStateToProps: MapStateToProps<State, {searchFilter?: string}, Props> = state => ({
     conversations: getConversations(state),
     currentUser: getCurrentUser(state),
 });

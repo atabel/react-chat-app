@@ -7,6 +7,7 @@ import FlipMove from 'react-flip-move';
 import ChatBar from './chat-bar';
 import {getConversationMessages, getConversationUsers, getCurrentUser} from '../reducer';
 import MessageBubble from './message-bubble';
+import type {State as StoreState} from '../reducer';
 
 const getScrollToBottomDistance = node => {
     // this should not be needed, but flow thinks this node can be an Element instead of HTMLElement
@@ -40,14 +41,9 @@ const bubbleContainerStyle = {
 };
 
 type Props = {
-    messages: Array<{
-        text?: string,
-        time: number,
-        sender?: string,
-        media?: Object,
-    }>,
-    currentUser: Object,
-    users: Array<Object>,
+    messages: *,
+    currentUser: *,
+    users: *,
 };
 
 type State = {
@@ -159,7 +155,7 @@ class Conversation extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps: MapStateToProps<*, *, *> = (state, props) => ({
+const mapStateToProps: MapStateToProps<StoreState, {conversationId: string}, Props> = (state, props) => ({
     messages: getConversationMessages(state, props.conversationId),
     users: getConversationUsers(state, props.conversationId),
     currentUser: getCurrentUser(state),
