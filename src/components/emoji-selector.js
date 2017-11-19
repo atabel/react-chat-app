@@ -1,20 +1,16 @@
 // @flow
 import * as React from 'react';
-import emojis from 'emoji-shortnames';
 import {emojify} from 'react-emojione';
 import EmojiIcon from './icons/emoji-icon';
 import BackSpaceIcon from './icons/back-space-icon';
 import FlowerIcon from './icons/flower-icon';
 import FoodIcon from './icons/food-icon';
 import CarIcon from './icons/car-icon';
-import emojiData from 'react-emojione/lib/data/emoji-data';
+import emojis from 'react-emojione/lib/data/emoji-shortnames';
 import deferRender from '../utils/defer-render';
-
-const supportedEmojis = new Set(emojiData.map(([, , shortName]) => shortName));
 
 const toneEmojiRegex = /_tone[0-9]:$/;
 const isNotTone = emojiShortName => !toneEmojiRegex.test(emojiShortName);
-const isSupported = emojiShortName => supportedEmojis.has(emojiShortName);
 
 const categories = {
     people: emojis.people.filter(isNotTone),
@@ -23,10 +19,6 @@ const categories = {
     travel: [...emojis.travel, ...emojis.flags],
     objects: [...emojis.objects, ...emojis.symbols],
 };
-
-Object.keys(categories).forEach(category => {
-    categories[category] = categories[category].filter(isSupported);
-});
 
 const categoryIcon = {
     people: EmojiIcon,
