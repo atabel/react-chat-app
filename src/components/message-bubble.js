@@ -26,7 +26,7 @@ const userNameColors = [
     '#ef4b4f',
 ];
 
-const colorForUserId = {};
+const colorForUserId: {[userId: string]: string} = {};
 let lastAssignedColorIdx = -1;
 const getUserColor = user => {
     let color = colorForUserId[user.id];
@@ -152,7 +152,15 @@ const OtherImage = ({sender, children}) => (
     </div>
 );
 
-const Media = ({url, title, description, image, embed, isOwnMessage}) => (
+type MediaProps = {
+    url: string,
+    title: string,
+    image: {url: string},
+    description: string,
+    isOwnMessage: boolean,
+};
+
+const Media = ({url, title, description, image, isOwnMessage}: MediaProps) => (
     <div
         style={{
             background: isOwnMessage ? '#72bcf8' : '#eee',

@@ -20,7 +20,11 @@ type Props = {
     title?: string,
     icon?: string,
     onClickIcon?: () => void,
-    actions?: Array<*>,
+    actions?: Array<{
+        title: string,
+        icon: string,
+        callback: () => mixed,
+    }>,
     style?: Object,
 };
 

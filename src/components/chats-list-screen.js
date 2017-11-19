@@ -35,7 +35,7 @@ class ChatsListScreen extends React.Component<{}, State> {
                 type="text"
                 placeholder="search..."
                 defaultValue={searchText}
-                onChange={evt => this.handleFilterChange(evt.target.value)}
+                onChange={(evt: SyntheticEvent<HTMLInputElement>) => this.handleFilterChange(evt.currentTarget.value)}
             />
         );
     }

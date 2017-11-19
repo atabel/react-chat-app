@@ -3,10 +3,7 @@ import * as React from 'react';
 
 const style = {transition: 'fill 0.3s ease'};
 
-type Props = {
-    color: string,
-    size?: number,
-};
+type Props = {color: string, size?: number};
 
 const SendIcon = ({color, size = 24}: Props) => (
     <svg

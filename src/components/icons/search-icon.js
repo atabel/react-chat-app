@@ -1,10 +1,7 @@
 // @flow
 import * as React from 'react';
 
-type Props = {
-    color?: string,
-    size?: number,
-};
+type Props = {color?: string, size?: number};
 
 const SearchIcon = ({color = 'currentColor', size = 24}: Props) => (
     <svg fill={color} height={size} viewBox="0 0 24 24" width={size} xmlns="http://www.w3.org/2000/svg">

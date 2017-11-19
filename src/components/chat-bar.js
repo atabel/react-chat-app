@@ -42,7 +42,7 @@ class ChatBar extends React.Component<Props, State> {
     state = {text: '', emojiSelectorOpen: false};
     input = null;
 
-    handleSubmit = e => {
+    handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         const messageText = this.state.text.trim();
         if (messageText.length > 0) {
@@ -111,7 +111,9 @@ class ChatBar extends React.Component<Props, State> {
                             type="text"
                             placeholder="type a message"
                             value={text}
-                            onChange={evt => this.setState({text: evt.target.value})}
+                            onChange={(evt: SyntheticEvent<HTMLInputElement>) => {
+                                this.setState({text: evt.currentTarget.value});
+                            }}
                         />
                         <button style={buttonStyle}>
                             <SendIcon color={text.trim().length > 0 ? '#2196F3' : '#CCC'} />

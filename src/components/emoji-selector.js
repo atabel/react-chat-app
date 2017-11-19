@@ -114,6 +114,4 @@ class EmojiSelector extends React.Component<Props, State> {
     }
 }
 
-const es = <EmojiSelector onDelete={() => {}} onSelectEmoji={() => {}} />;
-
 export default EmojiSelector;

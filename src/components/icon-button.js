@@ -4,7 +4,7 @@ import * as React from 'react';
 type Props = {
     icon: string | React.Element<any>,
     label?: string,
-    onPress: () => void,
+    onPress: () => mixed,
     style?: Object,
 };
 
