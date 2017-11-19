@@ -172,10 +172,10 @@ const Media = ({url, title, description, image, embed, isOwnMessage}) => (
 const isImg = ({title, description, image, url} = {}) => url && !title && !description && !image;
 
 const markRenderers = {
-    _: ({children}) => <span style={{fontStyle: 'italic'}}>{children}</span>,
-    '*': ({children}) => <span style={{fontWeight: 'bold'}}>{children}</span>,
-    '~': ({children}) => <span style={{textDecoration: 'line-through'}}>{children}</span>,
-    '`': ({children}) => <span style={{fontFamily: 'monospace'}}>{children}</span>,
+    _: {renderer: ({children}) => <span style={{fontStyle: 'italic'}}>{children}</span>},
+    '*': {renderer: ({children}) => <span style={{fontWeight: 'bold'}}>{children}</span>},
+    '~': {renderer: ({children}) => <span style={{textDecoration: 'line-through'}}>{children}</span>},
+    '`': {renderer: ({children}) => <span style={{fontFamily: 'monospace'}}>{children}</span>},
 };
 
 type Props = {
@@ -202,7 +202,7 @@ const MessageBubble = ({sender, text, media, time, me}: Props) => {
         <MessageWrapper sender={sender}>
             <span style={{wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}>
                 <Emojify>
-                    <Mark wrap="span" renderers={markRenderers}>
+                    <Mark wrap="span" options={markRenderers}>
                         {text}
                     </Mark>
                 </Emojify>

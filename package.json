@@ -21,7 +21,7 @@
         "react-dom": "^16.1.1",
         "react-emojione": "^5.0.0",
         "react-flip-move": "^2.9.17",
-        "react-mark-ii": "^1.2.4",
+        "react-mark-ii": "^2.2.0",
         "react-redux": "^5.0.6",
         "react-router-dom": "^4.2.2",
         "reconnecting-websocket": "^3.2.2",
