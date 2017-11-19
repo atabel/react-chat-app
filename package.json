@@ -3,29 +3,30 @@
     "version": "0.1.0",
     "private": true,
     "devDependencies": {
-        "enzyme": "^2.9.1",
-        "flow-bin": "^0.56.0",
-        "gh-pages": "^1.0.0",
+        "enzyme": "^3.2.0",
+        "flow-bin": "^0.59.0",
+        "gh-pages": "^1.1.0",
         "husky": "^0.14.3",
         "jsdom": "^11.3.0",
-        "lint-staged": "^4.2.3",
-        "prettier": "^1.7.4",
+        "lint-staged": "^5.0.0",
+        "prettier": "^1.8.2",
         "react-addons-test-utils": "^15.6.2",
-        "react-scripts": "^1.0.14",
-        "react-test-renderer": "^15.6.1",
+        "react-scripts": "^1.0.17",
+        "react-test-renderer": "^16.1.1",
         "sw-precache": "^5.2.0"
     },
     "dependencies": {
-        "emoji-shortnames": "^3.0.0",
+        "emoji-shortnames": "^3.1.2",
+        "enzyme-adapter-react-16": "^1.1.0",
         "lodash": "^4.16.6",
-        "react": "^15.6.1",
-        "react-dom": "^15.6.1",
+        "react": "^16.1.1",
+        "react-dom": "^16.1.1",
         "react-emojione": "^3.1.10",
-        "react-flip-move": "^2.9.15",
+        "react-flip-move": "^2.9.17",
         "react-mark-ii": "^1.2.4",
         "react-redux": "^5.0.6",
         "react-router-dom": "^4.2.2",
-        "reconnecting-websocket": "^3.0.5",
+        "reconnecting-websocket": "^3.2.2",
         "redux": "^3.7.2",
         "redux-thunk": "^2.1.0"
     },
@@ -48,7 +49,10 @@
         "parser": "flow"
     },
     "lint-staged": {
-        "src/**/*.js": ["prettier --write", "git add"]
+        "src/**/*.js": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "eslintConfig": {
         "extends": "react-app"
