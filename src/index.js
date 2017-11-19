@@ -10,6 +10,12 @@ import registerServiceWorker from './register-service-worker';
 
 const initApp = () => {
     const store = configureStore();
+    const el = document.getElementById('root');
+
+    if (!el) {
+        console.error('Dom element with id #root not found!');
+        return;
+    }
 
     ReactDOM.render(
         <Provider store={store}>
@@ -17,7 +23,7 @@ const initApp = () => {
                 <Route render={({location}) => <PrivateRoute location={location} path="/" component={App} />} />
             </Router>
         </Provider>,
-        document.getElementById('root')
+        el
     );
 };
 
