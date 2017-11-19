@@ -10,7 +10,7 @@ import emojis from 'react-emojione/lib/data/emoji-shortnames';
 import deferRender from '../utils/defer-render';
 
 const toneEmojiRegex = /_tone[0-9]:$/;
-const isNotTone = emojiShortName => !toneEmojiRegex.test(emojiShortName);
+const isNotTone = (emojiShortName: string) => !toneEmojiRegex.test(emojiShortName);
 
 const categories = {
     people: emojis.people.filter(isNotTone),
@@ -20,6 +20,10 @@ const categories = {
     objects: [...emojis.objects, ...emojis.symbols],
 };
 
+type CategoryName = $Keys<typeof categories>;
+
+const getEmojisForCategory = (catName: CategoryName): string[] => categories[catName];
+
 const categoryIcon = {
     people: EmojiIcon,
     nature: FlowerIcon,
@@ -28,8 +32,10 @@ const categoryIcon = {
     objects: EmojiIcon,
 };
 
+const getIconForCategory = (catName: CategoryName): React.ComponentType<any> => categoryIcon[catName];
+
 const renderCategoryIcon = (categoryName, isSelected) => {
-    const Component = categoryIcon[categoryName] || EmojiIcon;
+    const Component = getIconForCategory(categoryName);
     const props = isSelected ? {color: '#2196F3'} : {};
     return <Component {...props} />;
 };
@@ -68,13 +74,13 @@ const Drawer = deferRender(({emojis, onSelectEmoji}: DrawerProps) => (
 ));
 
 type Props = {
-    onSelectEmoji: (emojiShortName: string) => void,
-    onDelete: () => void,
-    style: Object,
+    onSelectEmoji: (emojiShortName: string) => mixed,
+    onDelete: () => mixed,
+    style?: Object,
 };
 
 type State = {
-    selectedCategory: $Keys<typeof categories>,
+    selectedCategory: CategoryName,
 };
 
 class EmojiSelector extends React.Component<Props, State> {
@@ -83,7 +89,7 @@ class EmojiSelector extends React.Component<Props, State> {
     render() {
         const {selectedCategory} = this.state;
         const {onSelectEmoji, onDelete, style} = this.props;
-        const categoryEmojis = categories[selectedCategory];
+        const categoryEmojis = getEmojisForCategory(selectedCategory);
 
         return (
             <div style={{...selectorStyle, ...style}}>
@@ -107,5 +113,7 @@ class EmojiSelector extends React.Component<Props, State> {
         );
     }
 }
+
+const es = <EmojiSelector onDelete={() => {}} onSelectEmoji={() => {}} />;
 
 export default EmojiSelector;
