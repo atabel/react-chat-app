@@ -6,6 +6,7 @@ flow-typed
 
 # testing
 coverage
+flow-coverage
 
 # production
 build

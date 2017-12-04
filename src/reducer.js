@@ -1,6 +1,7 @@
 // @flow
 import {combineReducers} from 'redux';
 import type {Message, Conversation, User} from './models';
+import type {Action} from './actions';
 
 const flatMap = (list, fn) => [].concat(...list.map(fn));
 
@@ -8,9 +9,9 @@ const unique = list => Array.from(new Set(list));
 
 const getMessageId = message => `${message.sender}_${message.time}`;
 
-const messages = (state = {}, {type, payload}) => {
-    if (type === 'ADD_MESSAGE') {
-        const {conversationId, ...message} = payload;
+const messages = (state = {}, action: Action) => {
+    if (action.type === 'ADD_MESSAGE') {
+        const {conversationId, ...message} = action.payload;
         const messageId = getMessageId(message);
         return {
             ...state,
@@ -19,27 +20,28 @@ const messages = (state = {}, {type, payload}) => {
                 [messageId]: {...message, id: messageId},
             },
         };
-    } else if (type === 'SET_MESSAGES') {
-        return payload || state;
+    } else if (action.type === 'SET_MESSAGES') {
+        return action.payload || state;
     }
 
     return state;
 };
 
-const conversations = (state = {}, {type, payload}) => {
-    if (type === 'ADD_CONVERSATION' || type === 'SET_CURRENT_USER') {
-        return {...state, [payload.id]: {...payload, connected: true}};
-    } else if (type === 'DISCONNECT_USER') {
-        if (payload in state) {
-            return {...state, [payload]: {...state[payload], connected: false}};
+const conversations = (state = {}, action: Action) => {
+    if (action.type === 'ADD_CONVERSATION' || action.type === 'SET_CURRENT_USER') {
+        return {...state, [action.payload.id]: {...action.payload, connected: true}};
+    } else if (action.type === 'DISCONNECT_USER') {
+        if (action.payload in state) {
+            return {...state, [action.payload]: {...state[action.payload], connected: false}};
         }
-    } else if (type === 'SET_CONVERSATIONS') {
-        return payload || state;
+    } else if (action.type === 'SET_CONVERSATIONS') {
+        return action.payload || state;
     }
     return state;
 };
 
-const currentUser = (state = null, {type, payload}): User | null => (type === 'SET_CURRENT_USER' ? payload : state);
+const currentUser = (state: ?User = null, action: Action) =>
+    action.type === 'SET_CURRENT_USER' ? action.payload : state;
 
 export default combineReducers({
     currentUser,

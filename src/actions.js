@@ -6,9 +6,9 @@ import {loadState, storeSession} from './storage';
 
 type AddConversationAction = {type: 'ADD_CONVERSATION', payload: Conversation};
 type DisconnectUserAction = {type: 'DISCONNECT_USER', payload: string};
-type AddMessageAction = {type: 'ADD_MESSAGE', payload: Message};
+type AddMessageAction = {type: 'ADD_MESSAGE', payload: Message & {conversationId: string}};
 type SetCurrentUserAction = {type: 'SET_CURRENT_USER', payload: User};
-type SetMessagesAction = {type: 'SET_MESSAGES', payload: {[id: string]: Message}};
+type SetMessagesAction = {type: 'SET_MESSAGES', payload: {[conversationId: string]: {[id: string]: Message}}};
 type SetConversationsAction = {type: 'SET_CONVERSATIONS', payload: {[id: string]: Conversation}};
 
 export type Action =

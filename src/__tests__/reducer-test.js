@@ -1,7 +1,8 @@
+//@flow
 import reducer, {getCurrentUser} from '../reducer';
 
 test('initial state', () => {
-    expect(reducer({}, {})).toEqual({
+    expect(reducer(undefined, {})).toEqual({
         currentUser: null,
         messages: {},
         conversations: {},
@@ -9,9 +10,8 @@ test('initial state', () => {
 });
 
 test('set current user', () => {
-    const initialState = {currentUser: null};
     const newCurrentUser = 'any user id';
-    const newState = reducer(initialState, {type: 'SET_CURRENT_USER', payload: newCurrentUser});
+    const newState = reducer(undefined, {type: 'SET_CURRENT_USER', payload: newCurrentUser});
 
     expect(getCurrentUser(newState)).toBe(newCurrentUser);
 });

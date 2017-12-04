@@ -5,6 +5,7 @@
     "devDependencies": {
         "enzyme": "^3.2.0",
         "flow-bin": "^0.59.0",
+        "flow-coverage-report": "^0.4.0",
         "gh-pages": "^1.1.0",
         "husky": "^0.14.3",
         "jsdom": "^11.3.0",
@@ -36,7 +37,8 @@
         "eject": "react-scripts eject",
         "deploy": "yarn build && gh-pages -d build",
         "precommit": "lint-staged",
-        "flow": "flow"
+        "flow": "flow",
+        "flow-coverage": "flow-coverage-report -i 'src/**/*.js' -t html -t text"
     },
     "prettier": {
         "tabWidth": 4,

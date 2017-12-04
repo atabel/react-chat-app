@@ -1,9 +1,16 @@
+//@flow
 import {sendMessage, addMessage} from '../actions';
+
+const chatClientStub = {
+    sendMessage() {},
+};
 
 test('send message', () => {
     const messageText = 'ola k ase';
     const getState = () => ({
-        currentUser: 'me',
+        currentUser: null,
+        conversations: {},
+        messages: {},
     });
     const conversationId = 'convid';
 
@@ -24,7 +31,16 @@ test('send message', () => {
 
 test('add message sent by me', () => {
     const getState = () => ({
-        currentUser: {id: 'me'},
+        currentUser: {
+            id: 'me',
+            name: 'Abel',
+            fullName: 'Abel Toledano',
+            avatar: 'avatars/abel.jpg',
+            familyName: 'Toledano',
+            email: 'abel@example.com',
+        },
+        conversations: {},
+        messages: {},
     });
 
     const dispatchSpy = jest.fn();
@@ -33,7 +49,8 @@ test('add message sent by me', () => {
         sender: 'me',
         receiver: 'other',
         text: 'ola k ase',
-    })(dispatchSpy, getState);
+        time: 0,
+    })(dispatchSpy, getState, {chatClient: chatClientStub});
 
     expect(dispatchSpy).toBeCalledWith({
         type: 'ADD_MESSAGE',
@@ -48,7 +65,16 @@ test('add message sent by me', () => {
 
 test('add message sent by other', () => {
     const getState = () => ({
-        currentUser: {id: 'me'},
+        currentUser: {
+            id: 'me',
+            name: 'Abel',
+            fullName: 'Abel Toledano',
+            avatar: 'avatars/abel.jpg',
+            familyName: 'Toledano',
+            email: 'abel@example.com',
+        },
+        conversations: {},
+        messages: {},
     });
 
     const dispatchSpy = jest.fn();
@@ -57,7 +83,8 @@ test('add message sent by other', () => {
         sender: 'other',
         receiver: 'me',
         text: 'ola k ase',
-    })(dispatchSpy, getState);
+        time: 0,
+    })(dispatchSpy, getState, {chatClient: chatClientStub});
 
     expect(dispatchSpy).toBeCalledWith({
         type: 'ADD_MESSAGE',
